@@ -30,7 +30,7 @@ export function Range() {
       {answers && <div className="bg-sage"><div className="wrap flex flex-wrap items-center justify-between gap-2 py-3 text-sm"><p>Scents marked <b>For you</b> match your finder answers. <Link to="/scent-finder" className="inline-flex min-h-11 items-center underline">Change them</Link></p></div></div>}
 
       <section className="wrap flex flex-col gap-4 pb-6 pt-10 sm:pt-14">
-        <nav aria-label="Breadcrumb" className="text-sm text-mute"><Link to="/" className="underline">Home</Link> · {family === "all" ? "The range" : <><Link to="/range" className="underline">The range</Link> · {f.title}</>}</nav>
+        <nav aria-label="Breadcrumb" className="crumbs text-sm text-mute"><Link to="/">Home</Link> · {family === "all" ? "The range" : <><Link to="/range">The range</Link> · {f.title}</>}</nav>
         <h1 className="text-[44px] sm:text-[56px]">{f.title}</h1>
         <p className="max-w-2xl text-[17px] text-mute">{f.blurb}</p>
         <nav aria-label="Families" className="-mx-4 flex gap-2 overflow-x-auto px-4 pt-2 sm:mx-0 sm:flex-wrap sm:px-0">

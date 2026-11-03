@@ -74,12 +74,13 @@ export function OurScents() {
 
       <section className="bg-sage py-16">
         <div className="wrap">
-          <h2 className="mb-8 text-[32px] sm:text-[40px]">How a scent gets to the shelf</h2>
+          <h2 className="mb-2 text-[32px] sm:text-[40px]">How a scent gets to the shelf</h2>
+          <p className="mb-8 max-w-2xl text-mute">A proposed process for the page; every step is confirmed with the client and the perfumer before launch.</p>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[["01", "A brief", "A place, a time of day, a material. Common at dawn started as a walk; Cedar wardrobe as a cupboard door."],
-              ["02", "The blend", "[PERFUMER] builds the accord in [NUMBER] trials over [WEEKS] weeks. We wear every trial for a week before saying yes."],
-              ["03", "Maceration", "The blend rests in alcohol for [WEEKS] weeks so the materials settle into each other, then it is filtered and bottled."],
-              ["04", "Samples first", "Each batch is drawn into 2ml vials before the bottles are filled. The sample is the same juice, same batch."]].map(([n, t, d]) => (
+              ["02", "The blend", "[PERFUMER] builds the accord in [NUMBER] trials over [WEEKS] weeks. [HOW TRIALS ARE JUDGED, TO CONFIRM.]"],
+              ["03", "Maceration", "Proposed: the blend rests in alcohol for [WEEKS] weeks before it is filtered and bottled. [MACERATION AND BOTTLING, TO CONFIRM.]"],
+              ["04", "Samples first", "Proposed: each batch is drawn into 2ml vials from the same batch as the bottles. [HOW SAMPLES ARE FILLED, TO CONFIRM.]"]].map(([n, t, d]) => (
               <div key={t} className="flex flex-col gap-2 border-t border-ink pt-5"><p className="display text-[28px] text-mute">{n}</p><h3 className="text-xl">{t}</h3><p className="text-[15px] text-mute">{d}</p></div>
             ))}
           </div>

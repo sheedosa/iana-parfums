@@ -31,6 +31,7 @@ export const SITE = {
     "concentration (eau de parfum assumed), alcohol base, vegan or cruelty-free claims",
     "delivery charges, returns on sealed and opened bottles",
     "bottle and cap finish, and photography",
+    "social accounts (the iafashions Instagram and Facebook are carried from the sister sites)",
   ],
 };
 

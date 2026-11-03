@@ -48,7 +48,7 @@ export function ScentPage() {
         </div>
 
         <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-          <nav aria-label="Breadcrumb" className="text-sm text-mute"><Link to="/" className="underline">Home</Link> · <Link to="/range" className="underline">The range</Link> · <Link to={`/range/${fam}`} className="underline">{s.family}</Link></nav>
+          <nav aria-label="Breadcrumb" className="crumbs text-sm text-mute"><Link to="/">Home</Link> · <Link to="/range">The range</Link> · <Link to={`/range/${fam}`}>{s.family}</Link></nav>
           <div className="flex flex-col gap-2">
             <h1 className="text-[40px] sm:text-[52px]">{s.name}</h1>
             <p className="text-[18px]">{s.line}</p>
@@ -71,7 +71,7 @@ export function ScentPage() {
             {isSample ? (
               <>
                 <p className="flex items-center gap-3 text-[17px]"><Vial className="h-9 w-auto shrink-0" /> <span>Smell it first: £[PRICE] for 2ml, credited back against the bottle.</span></p>
-                <p className="text-sm text-mute">Enough for a week of wearing. When you come back for the 50ml or 100ml, the £[PRICE] comes off. [HOW THE CREDIT IS APPLIED: code in the sample box or on your account].</p>
+                <p className="text-sm text-mute">[HOW LONG A 2ML SAMPLE LASTS]. When you come back for the 50ml or 100ml, the £[PRICE] comes off. [HOW THE CREDIT IS APPLIED: code in the sample box or on your account].</p>
               </>
             ) : tried ? (
               <>
@@ -95,8 +95,8 @@ export function ScentPage() {
 
           <div className="border-t border-line">
             <details open className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">The story</summary><p className="pb-4 text-mute">{s.story}</p></details>
-            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Concentration and how long it lasts</summary><p className="pb-4 text-mute">Eau de parfum, [CONCENTRATION]% fragrance oil. {s.strength === "Light" ? "Light: sits close to the skin and softens over [HOURS] hours." : "Present: a clear trail for the first hours, then close to the skin for [HOURS] hours."} Two sprays is plenty.</p></details>
-            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Ingredients</summary><p className="pb-4 text-mute">[INGREDIENTS LIST]. [VEGAN / CRUELTY-FREE CLAIMS, IF CONFIRMED]. Keep out of sunlight and away from heat.</p></details>
+            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Concentration and how long it lasts</summary><p className="pb-4 text-mute">Eau de parfum, [CONCENTRATION]% fragrance oil. {s.strength === "Light" ? "Light: sits close to the skin and softens over [HOURS] hours." : "Present: a clear trail for the first hours, then close to the skin for [HOURS] hours."} [HOW MUCH TO APPLY].</p></details>
+            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Ingredients</summary><p className="pb-4 text-mute">[INGREDIENTS LIST]. [VEGAN / CRUELTY-FREE CLAIMS, IF CONFIRMED]. [STORAGE AND CARE ADVICE].</p></details>
             <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Delivery and returns</summary><p className="pb-4 text-mute">[DELIVERY TERMS]. [RETURNS WINDOW ON SEALED BOTTLES]. Opened bottles: this is why the sample comes first. Confirmed with the client before launch.</p></details>
           </div>
         </div>

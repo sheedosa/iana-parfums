@@ -24,11 +24,12 @@ export function Header() {
   return (
     <>
       <section aria-label="Notices">
-      {SITE.preview && <div className="bg-deep px-4 py-2 text-center text-[13px] text-paper">Concept preview · scents are samples; ordering opens at launch</div>}
+      {SITE.preview && <div className="hidden bg-deep px-4 py-2 text-center text-[13px] text-paper sm:block">Concept preview · scents are samples; ordering opens at launch</div>}
       <div className="on-ink bg-ink px-4 py-2 text-center text-[13px] tracking-wide text-paper">
+        {SITE.preview && <span className="sm:hidden">Concept preview · sample scents · </span>}
         {answers
-          ? <>Your finder: <b>{answersLabel(answers)}</b> → {picks.map((s, i) => <span key={s.handle}>{i ? ", " : ""}<Link to={`/scents/${s.handle}`} className="underline">{s.name}</Link></span>)} · <Link to="/scent-finder" className="underline">change</Link></>
-          : <>Smell it first: every scent as a 2ml sample, credited back against the bottle · <Link to="/scent-finder" className="underline">find my scent</Link></>}
+          ? <><span className="hidden sm:inline">Your finder: <b>{answersLabel(answers)}</b> → </span>{picks.map((s, i) => <span key={s.handle}>{i ? ", " : ""}<Link to={`/scents/${s.handle}`} className="strip-link">{s.name}</Link></span>)} · <Link to="/scent-finder" className="strip-link">change</Link></>
+          : <><span className="hidden sm:inline">Smell it first: every scent as a 2ml sample, credited back against the bottle · </span><Link to="/scent-finder" className="strip-link">find my scent</Link></>}
       </div>
       </section>
       <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
