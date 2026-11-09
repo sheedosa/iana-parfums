@@ -26,8 +26,8 @@ export function Range() {
         <nav aria-label="Breadcrumb" className="crumbs text-[15px] text-mute"><Link to="/">Home</Link> · {family === "all" ? "The range" : <><Link to="/range">The range</Link> · {f.title}</>}</nav>
         <h1 className="text-[48px] sm:text-[64px]">{family === "all" ? "The range" : `${f.title}`}</h1>
         <p className="max-w-2xl text-[18px] text-mute">{f.blurb}</p>
-        <p className="text-base">Bottles from {gbp(SITE.bottlesFrom)} · 2ml sample £[SAMPLE PRICE] · Sample scents and prices for this preview</p>
-        <nav aria-label="Families" className="-mx-4 flex gap-2 overflow-x-auto px-4 pt-2 sm:mx-0 sm:flex-wrap sm:px-0">
+        <p className="text-base">Bottles from {gbp(SITE.bottlesFrom)} · 2ml sample £[SAMPLE PRICE] · Sample scents with working names; bottle prices are samples for this preview</p>
+        <nav aria-label="Families" className="flex flex-wrap gap-2 pt-2">
           {[ALL, ...store.families()].map((x) => <Link key={x.handle} to={x.handle === "all" ? "/range" : `/range/${x.handle}`} className="chip" aria-current={x.handle === family ? "page" : undefined}>{x.handle === "all" ? "All four" : x.title}</Link>)}
         </nav>
       </section>

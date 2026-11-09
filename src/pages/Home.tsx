@@ -55,7 +55,7 @@ export function Home() {
               </li>
             ))}
           </ul>
-          <p className="mt-10 max-w-2xl text-base text-mute-dark">Names, notes and stories are to come from the house; these four are placeholders in the shape of the range. [NOTES TO COME]</p>
+          <p className="mt-10 max-w-2xl text-base text-mute-dark">{scents.map((s) => s.name).join(", ").replace(/, ([^,]*)$/, " and $1")} are working names. The names, notes and stories are to come from the house; these four are placeholders in the shape of the range. [NOTES TO COME]</p>
         </div>
       </section>
 

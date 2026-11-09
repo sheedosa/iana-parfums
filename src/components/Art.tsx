@@ -72,7 +72,8 @@ export function BottleArt({ scent, dark = false, plain = false, transform, label
   const collarY = yT - s.nh - 5;
   const capY = collarY - s.ch;
   const capX = CX - s.cw / 2;
-  const capLight = isDark(scent.cap) ? mix(scent.cap, PAPER, 0.35) : mix(scent.cap, INK, 0.12);
+  const cap = dark && scent.cap.toLowerCase() === INK ? DEEP : scent.cap;
+  const capLight = isDark(cap) ? mix(cap, PAPER, 0.35) : mix(cap, INK, 0.12);
   const ly = yT + s.bh * s.ly;
   const capPath = s.dome
     ? `M${capX} ${collarY}V${capY + s.cw / 2.6}A${s.cw / 2} ${s.cw / 2.6} 0 0 1 ${capX + s.cw} ${capY + s.cw / 2.6}V${collarY}Z`
@@ -90,8 +91,8 @@ export function BottleArt({ scent, dark = false, plain = false, transform, label
       {/* collar and cap */}
       <rect x={CX - s.nw / 2 - 3} y={collarY} width={s.nw + 6} height="5.5" rx="1" fill={dark ? PAPER : INK} stroke={line} strokeWidth="1.5" {...NS} />
       {capPath
-        ? <path d={capPath} fill={scent.cap} stroke={line} strokeWidth="1.5" {...NS} />
-        : <rect x={capX} y={capY} width={s.cw} height={s.ch} rx={s.cr} fill={scent.cap} stroke={line} strokeWidth="1.5" {...NS} />}
+        ? <path d={capPath} fill={cap} stroke={line} strokeWidth="1.5" {...NS} />
+        : <rect x={capX} y={capY} width={s.cw} height={s.ch} rx={s.cr} fill={cap} stroke={line} strokeWidth="1.5" {...NS} />}
       <rect x={capX + s.cw * 0.2} y={capY + (s.dome ? s.cw / 4 : 5)} width="2.5" height={s.ch - (s.dome ? s.cw / 4 : 5) - 6} rx="1.25" fill={capLight} />
       {/* the label, with the scent's name set on it */}
       <rect x={CX - s.lw / 2} y={ly - s.lh / 2} width={s.lw} height={s.lh} rx="1" fill={PAPER} stroke={line} strokeWidth="1" {...NS} />
@@ -129,7 +130,7 @@ function VialArt({ x = 0, y = 0, h = 112, colour = SAGE, line = INK, cap = INK }
 export function Vial({ colour = SAGE, dark = false, className = "" }: { colour?: string; dark?: boolean; className?: string }) {
   return (
     <svg viewBox="-2 -2 32 116" className={className} aria-hidden="true">
-      <VialArt colour={colour} line={dark ? PAPER : INK} cap={INK} />
+      <VialArt colour={colour} line={dark ? PAPER : INK} cap={dark ? DEEP : INK} />
     </svg>
   );
 }
@@ -137,12 +138,12 @@ export function Vial({ colour = SAGE, dark = false, className = "" }: { colour?:
 /* ---------- Hero still life: the bottle with its sample beside it ---------- */
 export function HeroStill({ scent, className = "" }: { scent: Scent; className?: string }) {
   return (
-    <svg viewBox="0 0 300 300" className={className} role="img" aria-label={`${scent.name}, a ${scent.family.toLowerCase()} scent: a 50ml bottle, with its 2ml sample vial beside it`}>
+    <svg viewBox="0 0 300 300" className={className} role="img" aria-label={`A ${scent.family.toLowerCase()} eau de parfum: a 50ml bottle, with its 2ml sample vial beside it`}>
       {/* a low Sage plinth the bottle and its sample stand on */}
       <rect x="10" y="262" width="280" height="30" rx="2" fill={SAGE} stroke={PAPER} strokeWidth="1.5" {...NS} />
       <path d="M10 270H290" stroke={INK} strokeWidth="1" opacity=".2" {...NS} />
-      <g transform="translate(6 -68.4) scale(1.42)"><BottleArt scent={scent} dark /></g>
-      <g transform="translate(224 150)"><VialArt h={112} colour={scent.colour} line={PAPER} cap={INK} /></g>
+      <g transform="translate(6 -68.4) scale(1.42)"><BottleArt scent={scent} dark label={["Eau de parfum", scent.family.toUpperCase()]} /></g>
+      <g transform="translate(224 150)"><VialArt h={112} colour={scent.colour} line={PAPER} cap={DEEP} /></g>
     </svg>
   );
 }

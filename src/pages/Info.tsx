@@ -100,7 +100,7 @@ export function Visit() {
       </section>
       <section className="wrap grid gap-10 py-14 md:grid-cols-[1.2fr_1fr_1fr]">
         <div className="flex flex-col gap-2 border-t border-ink pt-5"><h2 className="label font-sans text-mute">Address</h2><p className="text-lg">{SITE.address.street}<br />{SITE.address.area}, {SITE.address.city}<br />{SITE.address.postcode}</p><a href={maps} className="inline-flex min-h-11 items-center self-start underline">Open in Google Maps</a></div>
-        <div className="flex flex-col gap-2 border-t border-ink pt-5"><h2 className="label font-sans text-mute">Opening hours</h2><p className="text-lg">{SITE.hours}</p><p className="text-base text-mute">No appointment needed. The same shop as I&amp;A Fashions, Tailoring and Schoolwear, in Tooting since {SITE.since}.</p></div>
+        <div className="flex flex-col gap-2 border-t border-ink pt-5"><h2 className="label font-sans text-mute">Opening hours</h2><p className="text-lg">{SITE.hours}</p><p className="text-base text-mute">No appointment needed. The same shop as I&amp;A Fashions, Formal and Schoolwear, in Tooting since {SITE.since}.</p></div>
         <div className="flex flex-col gap-2 border-t border-ink pt-5"><h2 className="label font-sans text-mute">Phone</h2><a href={`tel:${SITE.phoneIntl}`} className="inline-flex min-h-11 items-center self-start text-lg underline">{SITE.phone}</a><p className="text-base text-mute">Ring to check a scent is in, or to put a sample aside.</p></div>
       </section>
       <section className="wrap grid gap-6 pb-6 lg:grid-cols-[1.3fr_1fr]">

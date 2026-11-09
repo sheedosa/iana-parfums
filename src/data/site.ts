@@ -1,4 +1,4 @@
-// Facts for I&A Parfums. Business details are the company's (same shop as Schoolwear, Fashions and Tailoring).
+// Facts for I&A Parfums. Business details are the company's (same shop as Schoolwear, Fashions and Formal).
 // Anything the client has not confirmed lives in toConfirm and appears on pages only as a labelled placeholder.
 export const SITE = {
   name: "I&A Parfums",
@@ -16,7 +16,7 @@ export const SITE = {
   url: "https://sheedosa.github.io/iana-parfums",
   family: [
     { name: "I&A Fashions", url: "https://sheedosa.github.io/iana-fashions/" },
-    { name: "I&A Tailoring", url: "https://sheedosa.github.io/iana-tailoring/" },
+    { name: "I&A Formal", url: "https://sheedosa.github.io/iana-tailoring/" },
     { name: "I&A Schoolwear", url: "https://sheedosa.github.io/iana-schoolwear/" },
   ],
   // Confirmed by the client.
@@ -53,4 +53,4 @@ export const SIZES = ["2ml sample", "50ml", "100ml"] as const;
 export type Size = (typeof SIZES)[number];
 
 export const gbp = (n: number) => `£${Number.isInteger(n) ? n : n.toFixed(2)}`;
-export const DELIVERY_LINE = `Standard delivery ${gbp(SITE.delivery.standard.price)} · Free over ${gbp(SITE.delivery.freeOver)} · ${SITE.returns.days}-day returns`;
+export const DELIVERY_LINE = `Standard delivery ${gbp(SITE.delivery.standard.price)} · Free from ${gbp(SITE.delivery.freeOver)} · ${SITE.returns.days}-day returns`;
