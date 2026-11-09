@@ -19,17 +19,30 @@ export const SITE = {
     { name: "I&A Tailoring", url: "https://sheedosa.github.io/iana-tailoring/" },
     { name: "I&A Schoolwear", url: "https://sheedosa.github.io/iana-schoolwear/" },
   ],
+  // Confirmed by the client.
+  bottlesFrom: 150, // GBP, 50ml and up
+  delivery: {
+    standard: { price: 4.95, time: "5 working days" },
+    express: { price: 7.95, time: "48 hours" },
+    freeOver: 100,
+    collect: "84 Mitcham Road, Tooting",
+  },
+  returns: { days: 28, excluded: ["suits", "bridal dresses", "prom dresses"] },
+  // What the client wants to sell, confirmed: samples, sample sets, gift boxes and a seasonal subscription.
   preview: true, // concept preview: sample scents, ordering switched off
   toConfirm: [
-    "trading name (I & A Parfums proposed)",
+    "Brand name (client considering M.H.T); I & A Parfums is the working name",
+    "the range: names, notes and stories (four samples here, one per family, named No. 1 to No. 4)",
     "whether the scents are the client's own or a bought-in range",
-    "the range: names, families, notes and stories (seven samples here)",
-    "prices for 2ml sample, 50ml and 100ml, and the discovery set",
-    "how the sample credit is applied (code in the sample box, account, in store)",
-    "whether the discovery set price is credited in full or in part",
+    "2ml sample price (shown as £[SAMPLE PRICE])",
+    "per-scent bottle prices (sample prices shown; bottles from £150 is confirmed)",
+    "Proposed: the sample credit (the 2ml price comes off the bottle) and how it is applied",
+    "discovery set price and whether it is credited in full or in part",
+    "gift box: what is in it and the price",
+    "the seasonal edition: what each edition contains, price and how often it is sent",
     "the perfumer, where the scents are blended and bottled, and the materials",
     "concentration (eau de parfum assumed), alcohol base, vegan or cruelty-free claims",
-    "delivery charges, returns on sealed and opened bottles",
+    "returns on opened perfume bottles and samples",
     "bottle and cap finish, and photography",
     "social accounts (the iafashions Instagram and Facebook are carried from the sister sites)",
   ],
@@ -38,3 +51,6 @@ export const SITE = {
 export const SAMPLE_ML = 2;
 export const SIZES = ["2ml sample", "50ml", "100ml"] as const;
 export type Size = (typeof SIZES)[number];
+
+export const gbp = (n: number) => `£${Number.isInteger(n) ? n : n.toFixed(2)}`;
+export const DELIVERY_LINE = `Standard delivery ${gbp(SITE.delivery.standard.price)} · Free over ${gbp(SITE.delivery.freeOver)} · ${SITE.returns.days}-day returns`;

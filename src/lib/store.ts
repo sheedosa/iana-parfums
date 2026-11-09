@@ -2,7 +2,7 @@
 // (ported from iana-schoolwear) implements the same interface, with Size (2ml sample / 50ml / 100ml) as the
 // variant option and family, strength and when as metafields or tags.
 import data from "../data/scents.json";
-import type { Size } from "../data/site";
+import { gbp, type Size } from "../data/site";
 
 export const FAMILIES = ["Fresh", "Floral", "Woody", "Warm"] as const;
 export type Family = (typeof FAMILIES)[number];
@@ -13,15 +13,13 @@ export type When = (typeof WHENS)[number];
 
 export type Scent = {
   handle: string;
-  name: string;
-  line: string; // two or three words under the name, the way a shelf label reads
+  name: string; // placeholder name in the house style, "No. 1"
   family: Family;
   strength: Strength;
   when: When | "Both";
-  notes: { top: string[]; heart: string[]; base: string[] };
-  story: string;
-  colour: string; // swatch, used for the bottle fill
+  colour: string; // swatch, used for the liquid in the drawn bottle
   cap: string;
+  prices: { "50ml": number; "100ml": number }; // sample prices, GBP
   pairs: string[]; // handles to "wear it with"
   sizes: Size[];
 };
@@ -29,26 +27,28 @@ export type FamilyPage = { handle: string; title: string; blurb: string };
 
 const d = data as unknown as { families: FamilyPage[]; scents: Scent[] };
 
+/** "No. 1 Fresh": the name as it reads on the label and in headings. */
+export const fullName = (s: Scent) => `${s.name} ${s.family}`;
+
+/** Price text for a size. The 2ml price is not confirmed; bottle prices are samples. */
+export const priceText = (s: Scent, size: Size) => (size === "2ml sample" ? "£[SAMPLE PRICE]" : gbp(s.prices[size]));
+
 export const store = {
   families: (): FamilyPage[] => d.families,
   family: (handle: string) => d.families.find((f) => f.handle === handle),
-  scents: (f: { family?: string; strength?: Strength[]; when?: When[] } = {}): Scent[] =>
-    d.scents.filter((s) =>
-      (!f.family || f.family === "all" || s.family.toLowerCase() === f.family.toLowerCase()) &&
-      (!f.strength?.length || f.strength.includes(s.strength)) &&
-      (!f.when?.length || s.when === "Both" || f.when.includes(s.when))),
+  scents: (f: { family?: string } = {}): Scent[] =>
+    d.scents.filter((s) => !f.family || f.family === "all" || s.family.toLowerCase() === f.family.toLowerCase()),
   scent: (handle: string) => d.scents.find((s) => s.handle === handle),
   pairs: (s: Scent): Scent[] => s.pairs.map((h) => d.scents.find((x) => x.handle === h)).filter((x): x is Scent => Boolean(x)),
 };
 
-/** Scent finder: three answers narrow the range to the two or three closest scents. Family counts most. */
+/** Scent finder: three answers rank the range. Family counts most; the closest one or two are returned. */
 export type Answers = { when: When; family: Family; strength: Strength };
 export function findScents(a: Answers): Scent[] {
   const score = (s: Scent) =>
     (s.family === a.family ? 4 : 0) + (s.when === a.when ? 2 : s.when === "Both" ? 1 : 0) + (s.strength === a.strength ? 1 : 0);
   const ranked = [...d.scents].map((s) => ({ s, n: score(s) })).sort((x, y) => y.n - x.n);
-  const inFamily = ranked.filter((r) => r.s.family === a.family);
-  const picks = inFamily.length >= 2 ? inFamily.slice(0, 3) : ranked.slice(0, 3);
-  return picks.map((r) => r.s);
+  // The family match, plus the next closest if it shares at least when or strength.
+  return ranked.filter((r, i) => i === 0 || (i === 1 && r.n >= 2)).map((r) => r.s);
 }
 export const answersLabel = (a: Answers) => `${a.when} · ${a.family} · ${a.strength}`;

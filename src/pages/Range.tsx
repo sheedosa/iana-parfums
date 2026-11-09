@@ -1,76 +1,61 @@
-import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Seo, breadcrumbs } from "../components/Seo";
 import { ScentCard } from "../components/ScentCard";
 import { NotFound } from "./NotFound";
-import { STRENGTHS, WHENS, store, type Strength, type When } from "../lib/store";
+import { answersLabel, store } from "../lib/store";
 import { usePrefs } from "../lib/prefs";
-import { Vial } from "../components/Art";
+import { SITE, gbp } from "../data/site";
 
-const ALL = { handle: "all", title: "The range", blurb: "Seven eaux de parfum, two fresh, two floral, two woody and one warm. Every one as a 2ml sample first." };
+const ALL = { handle: "all", title: "The range", blurb: "Four eaux de parfum, one in each family. Every one as a 2ml sample before the bottle." };
 
 export function Range() {
   const { family = "all" } = useParams();
   const f = family === "all" ? ALL : store.family(family);
   const { answers } = usePrefs();
-  const [strength, setStrength] = useState<Strength[]>([]);
-  const [when, setWhen] = useState<When[]>([]);
   if (!f) return <NotFound />;
 
-  const base = store.scents({ family });
-  const list = store.scents({ family, strength, when });
-  const tog = <T,>(set: (fn: (x: T[]) => T[]) => void, v: T) => set((x) => (x.includes(v) ? x.filter((y) => y !== v) : [...x, v]));
+  const list = store.scents({ family });
   const path = family === "all" ? "/range" : `/range/${family}`;
 
   return (
     <>
-      <Seo title={family === "all" ? "The range" : `${f.title} scents`} path={path} description={`${f.blurb} I&A Parfums, Tooting, London.`}
-        jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: f.title, path }]), { "@context": "https://schema.org", "@type": "CollectionPage", name: f.title, description: f.blurb }]} />
+      <Seo title={family === "all" ? "The range" : `${f.title} scents`} path={path} description={`${f.blurb} Bottles from ${gbp(SITE.bottlesFrom)}. I&A Parfums, Tooting, London.`}
+        jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, ...(family === "all" ? [] : [{ name: "The range", path: "/range" }]), { name: f.title, path }]), { "@context": "https://schema.org", "@type": "CollectionPage", name: f.title, description: f.blurb }]} />
 
-      {answers && <div className="bg-sage"><div className="wrap flex flex-wrap items-center justify-between gap-2 py-3 text-sm"><p>Scents marked <b>For you</b> match your finder answers. <Link to="/scent-finder" className="inline-flex min-h-11 items-center underline">Change them</Link></p></div></div>}
-
-      <section className="wrap flex flex-col gap-4 pb-6 pt-10 sm:pt-14">
-        <nav aria-label="Breadcrumb" className="crumbs text-sm text-mute"><Link to="/">Home</Link> · {family === "all" ? "The range" : <><Link to="/range">The range</Link> · {f.title}</>}</nav>
-        <h1 className="text-[44px] sm:text-[56px]">{f.title}</h1>
-        <p className="max-w-2xl text-[17px] text-mute">{f.blurb}</p>
+      <section className="wrap flex flex-col gap-4 pb-8 pt-8 sm:pt-12">
+        <nav aria-label="Breadcrumb" className="crumbs text-[15px] text-mute"><Link to="/">Home</Link> · {family === "all" ? "The range" : <><Link to="/range">The range</Link> · {f.title}</>}</nav>
+        <h1 className="text-[48px] sm:text-[64px]">{family === "all" ? "The range" : `${f.title}`}</h1>
+        <p className="max-w-2xl text-[18px] text-mute">{f.blurb}</p>
+        <p className="text-base">Bottles from {gbp(SITE.bottlesFrom)} · 2ml sample £[SAMPLE PRICE] · Sample scents and prices for this preview</p>
         <nav aria-label="Families" className="-mx-4 flex gap-2 overflow-x-auto px-4 pt-2 sm:mx-0 sm:flex-wrap sm:px-0">
-          {[ALL, ...store.families()].map((x) => <Link key={x.handle} to={x.handle === "all" ? "/range" : `/range/${x.handle}`} className="chip" aria-current={x.handle === family ? "page" : undefined}>{x.handle === "all" ? "All" : x.title}</Link>)}
+          {[ALL, ...store.families()].map((x) => <Link key={x.handle} to={x.handle === "all" ? "/range" : `/range/${x.handle}`} className="chip" aria-current={x.handle === family ? "page" : undefined}>{x.handle === "all" ? "All four" : x.title}</Link>)}
         </nav>
       </section>
 
-      <section className="wrap grid gap-10 pb-10 lg:grid-cols-[240px_1fr]">
-        <aside aria-label="Filters" className="flex flex-col gap-7">
-          <fieldset className="flex flex-col gap-1">
-            <legend className="label mb-2 text-mute">Strength</legend>
-            {STRENGTHS.map((x) => <label key={x} className="flex min-h-11 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" checked={strength.includes(x)} onChange={() => tog(setStrength, x)} className="h-[18px] w-[18px] accent-[#45353a]" /> {x} <span className="text-mute">({base.filter((s) => s.strength === x).length})</span></label>)}
-          </fieldset>
-          <fieldset className="flex flex-col gap-1">
-            <legend className="label mb-2 text-mute">When</legend>
-            {WHENS.map((x) => <label key={x} className="flex min-h-11 cursor-pointer items-center gap-3 text-sm"><input type="checkbox" checked={when.includes(x)} onChange={() => tog(setWhen, x)} className="h-[18px] w-[18px] accent-[#45353a]" /> {x} <span className="text-mute">({base.filter((s) => s.when === x || s.when === "Both").length})</span></label>)}
-          </fieldset>
-          <div className="on-ink flex flex-col gap-2 rounded-pill bg-ink p-4 text-paper">
-            <Vial className="h-12 w-auto" />
-            <p className="text-sm font-normal">Not sure which?</p>
-            <p className="text-sm text-mute-dark">Every scent is £[PRICE] as a 2ml sample, credited back when you buy the bottle.</p>
-            <Link to="/discovery-set" className="label inline-flex min-h-11 items-center text-paper underline">Try all seven</Link>
+      <section className="wrap pb-6">
+        <h2 className="sr-only">Scents</h2>
+        {family === "all" ? (
+          <div className="grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 lg:grid-cols-4">{list.map((s) => <ScentCard key={s.handle} s={s} tall />)}</div>
+        ) : (
+          <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
+            {list.map((s) => <ScentCard key={s.handle} s={s} />)}
+            <div className="flex flex-col gap-4">
+              <h2 className="text-[32px] sm:text-[40px]">One {f.title.toLowerCase()} scent, for now.</h2>
+              <p className="text-[18px]">The range is four on purpose: one scent in each family. {f.blurb}</p>
+              <div className="flex flex-wrap gap-2">{store.families().filter((x) => x.handle !== family).map((x) => <Link key={x.handle} to={`/range/${x.handle}`} className="chip">{x.title}</Link>)}</div>
+            </div>
           </div>
-        </aside>
-        <div className="min-w-0">
-          <h2 className="sr-only">Scents</h2>
-          <p className="mb-5 text-sm text-mute" aria-live="polite">{list.length} {list.length === 1 ? "scent" : "scents"}</p>
-          {list.length ? (
-            <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 xl:grid-cols-3">{list.map((s) => <ScentCard key={s.handle} s={s} />)}</div>
-          ) : (
-            <div className="rounded-pill bg-stone p-8 text-center"><p>Nothing matches those filters.</p><button type="button" onClick={() => { setStrength([]); setWhen([]); }} className="btn btn-ghost mt-4">Clear filters</button></div>
-          )}
-        </div>
+        )}
       </section>
 
-      <section className="wrap">
-        <div className="flex flex-col gap-4 rounded-pill bg-sage p-8 sm:flex-row sm:items-center sm:justify-between">
-          <div><h2 className="text-[28px] sm:text-[32px]">Three questions narrow it to two or three</h2><p className="text-mute">When you wear it, which family, how strong. Your answers are saved and the matches are flagged on every page.</p></div>
-          <Link to="/scent-finder" className="btn btn-ink shrink-0">Find my scent</Link>
-        </div>
+      <section className="wrap pt-8">
+        <p className="flex flex-wrap items-center gap-x-3 border-t border-line pt-6 text-base">
+          {answers
+            ? <>Scents marked <b>For you</b> match your finder answers ({answersLabel(answers)}). <Link to="/scent-finder" className="inline-flex min-h-11 items-center underline">Change them</Link></>
+            : <>Not sure? Three questions point you to one or two. <Link to="/scent-finder" className="inline-flex min-h-11 items-center underline">Find my scent</Link></>}
+          <span aria-hidden="true">·</span>
+          <Link to="/discovery-set" className="inline-flex min-h-11 items-center underline">Or try all four as samples</Link>
+        </p>
       </section>
     </>
   );

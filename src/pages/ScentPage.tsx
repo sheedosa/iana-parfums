@@ -2,11 +2,27 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Seo, breadcrumbs } from "../components/Seo";
 import { ScentCard } from "../components/ScentCard";
-import { Bottle, NotesDiagram, Vial, isDark } from "../components/Art";
+import { Bottle, DiscoveryBox, Vial } from "../components/Art";
 import { NotFound } from "./NotFound";
-import { store } from "../lib/store";
+import { fullName, priceText, store } from "../lib/store";
 import { usePrefs } from "../lib/prefs";
-import { SITE, SIZES, type Size } from "../data/site";
+import { SITE, SIZES, gbp, type Size } from "../data/site";
+
+export function DeliveryRows({ className = "" }: { className?: string }) {
+  const d = SITE.delivery;
+  const rows: [string, string][] = [
+    ["Standard", `${gbp(d.standard.price)}, ${d.standard.time}`],
+    ["Express", `${gbp(d.express.price)}, ${d.express.time}`],
+    ["Free delivery", `On orders of ${gbp(d.freeOver)} and over`],
+    ["Click and collect", `From ${d.collect}`],
+    ["Returns", `${SITE.returns.days} days. Opened bottles: [TO CONFIRM]`],
+  ];
+  return (
+    <dl className={`grid text-base ${className}`}>
+      {rows.map(([k, v]) => <div key={k} className="grid grid-cols-[9.5rem_1fr] gap-3 border-b border-line py-2.5"><dt className="text-mute">{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+  );
+}
 
 export function ScentPage() {
   const { handle = "" } = useParams();
@@ -17,6 +33,7 @@ export function ScentPage() {
   useEffect(() => { setSize(sampled.includes(handle) ? "50ml" : "2ml sample"); }, [handle]);
   if (!s) return <NotFound />;
 
+  const name = fullName(s);
   const path = `/scents/${s.handle}`;
   const fam = s.family.toLowerCase();
   const pairs = store.pairs(s);
@@ -25,114 +42,91 @@ export function ScentPage() {
 
   return (
     <>
-      <Seo title={`${s.name}, eau de parfum`} path={path} type="product"
-        description={`${s.name}: ${s.line.toLowerCase()}. A ${s.strength.toLowerCase()} ${fam} eau de parfum for ${whenText}. Try the 2ml sample first; the price is credited against the bottle. I&A Parfums, Tooting.`}
-        jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "The range", path: "/range" }, { name: s.family, path: `/range/${fam}` }, { name: s.name, path }]),
-          { "@context": "https://schema.org", "@type": "Product", name: s.name, description: s.story, brand: { "@type": "Brand", name: SITE.name }, category: `${s.family} eau de parfum`, color: s.colour,
-            additionalProperty: [{ "@type": "PropertyValue", name: "Top notes", value: s.notes.top.join(", ") }, { "@type": "PropertyValue", name: "Heart notes", value: s.notes.heart.join(", ") }, { "@type": "PropertyValue", name: "Base notes", value: s.notes.base.join(", ") }] }]} />
+      <Seo title={`${name}, eau de parfum`} path={path} type="product"
+        description={`${name}: a ${s.strength.toLowerCase()} ${fam} eau de parfum for ${whenText}, from I & A Parfums in Tooting. Try the 2ml sample first; bottles from ${gbp(SITE.bottlesFrom)}.`}
+        jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "The range", path: "/range" }, { name: s.family, path: `/range/${fam}` }, { name, path }]),
+          { "@context": "https://schema.org", "@type": "Product", name, description: `A ${fam} eau de parfum. Concept preview: sample scent.`, brand: { "@type": "Brand", name: SITE.name }, category: `${s.family} eau de parfum`, color: s.colour }]} />
 
-      <section className="wrap grid gap-10 pb-16 pt-6 lg:grid-cols-[1.15fr_1fr] lg:gap-14 lg:pt-10">
-        <div className="flex flex-col gap-3">
-          <div className="relative flex aspect-[4/5] items-end justify-center overflow-hidden rounded-pill bg-sage sm:aspect-[5/5] lg:aspect-[4/5]">
-            <span className="label absolute left-4 top-4 text-mute">{s.family} · {s.strength} · {s.when === "Both" ? "Day and evening" : s.when}</span>
-            <Bottle colour={s.colour} cap={s.cap} className="h-[76%] w-auto" title={`${s.name} bottle in ${s.line.toLowerCase()} tones`} />
-            <div className="absolute bottom-4 right-4 flex items-end gap-2">
-              <Vial colour={s.colour} className="h-16 w-auto" />
-              <span className="label text-[11px] text-mute">2ml</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 text-sm text-mute">
-            <span className="inline-block h-6 w-10 rounded-pill border border-ink/30" style={{ background: s.colour }} aria-hidden="true" />
-            <span>Bottle colour is a stand-in for photography. Concept preview.</span>
+      <section className="wrap grid gap-x-14 gap-y-6 pb-16 pt-5 lg:grid-cols-[1.1fr_1fr] lg:pt-10">
+        {/* Headline and price first in the reading order, so they lead on phones; on desktop they sit right of the bottle. */}
+        <div className="flex flex-col gap-2 lg:col-start-2 lg:row-start-1">
+          <nav aria-label="Breadcrumb" className="crumbs text-[15px] text-mute"><Link to="/">Home</Link> · <Link to="/range">The range</Link> · <Link to={`/range/${fam}`}>{s.family}</Link></nav>
+          <h1 className="text-[44px] sm:text-[60px]">{name}</h1>
+          <p className="text-[18px]">Eau de parfum · {s.strength} · for {whenText}</p>
+          <p className="text-[18px]"><b>2ml sample £[SAMPLE PRICE]</b> <span className="text-mute">· 50ml {gbp(s.prices["50ml"])} · 100ml {gbp(s.prices["100ml"])}</span></p>
+        </div>
+
+        <div className="relative flex h-[300px] items-end justify-center overflow-hidden rounded-pill bg-sage px-6 pt-8 sm:h-[420px] lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:sticky lg:top-24 lg:self-start lg:h-[min(720px,calc(100vh-7rem))]">
+          <span className="label absolute left-4 top-4 text-mute">{s.family} · {s.strength}</span>
+          <span className="absolute inset-x-0 bottom-0 h-[7%] border-t border-ink/25 bg-[#cdd8d2]" aria-hidden="true" />
+          <div className="relative flex h-[90%] w-full items-end justify-center gap-[4%]">
+            <Bottle scent={s} className="h-full w-auto max-w-[70%]" title={`${name}: the bottle, with the scent's name on the label`} />
+            <Vial colour={s.colour} className="h-[30%] w-auto" />
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-          <nav aria-label="Breadcrumb" className="crumbs text-sm text-mute"><Link to="/">Home</Link> · <Link to="/range">The range</Link> · <Link to={`/range/${fam}`}>{s.family}</Link></nav>
-          <div className="flex flex-col gap-2">
-            <h1 className="text-[40px] sm:text-[52px]">{s.name}</h1>
-            <p className="text-[18px]">{s.line}</p>
-            <p className="text-sm text-mute">Eau de parfum · {s.strength} · for {whenText}</p>
-          </div>
-
+        <div className="flex flex-col gap-6 lg:col-start-2 lg:row-start-2">
           <fieldset className="flex flex-col gap-3">
             <legend className="label mb-2 text-mute">Size</legend>
             <div className="grid grid-cols-3 gap-2">
               {SIZES.filter((x) => s.sizes.includes(x)).map((x) => (
                 <button key={x} type="button" aria-pressed={size === x} onClick={() => setSize(x)} className={`flex min-h-14 flex-col items-start justify-center rounded-pill border px-3 py-2 text-left ${size === x ? "border-ink bg-ink text-paper" : "border-ink hover:bg-stone"}`}>
-                  <span className="text-sm">{x}</span>
-                  <span className={`text-[13px] ${size === x ? "text-mute-dark" : "text-mute"}`}>£[PRICE]</span>
+                  <span className="text-base">{x === "2ml sample" ? "2ml sample" : x}</span>
+                  <span className={`text-[14px] ${size === x ? "text-mute-dark" : "text-mute"}`}>{x === "2ml sample" ? "£[PRICE]" : priceText(s, x)}</span>
                 </button>
               ))}
             </div>
+            <p className="text-[14px] text-mute">Bottle prices are samples for this preview; bottles from {gbp(SITE.bottlesFrom)} is confirmed.</p>
           </fieldset>
 
-          <div className="flex flex-col gap-3 rounded-pill border border-ink p-4">
+          <div className="flex flex-col gap-3 rounded-pill border border-ink p-5">
             {isSample ? (
-              <>
-                <p className="flex items-center gap-3 text-[17px]"><Vial className="h-9 w-auto shrink-0" /> <span>Smell it first: £[PRICE] for 2ml, credited back against the bottle.</span></p>
-                <p className="text-sm text-mute">[HOW LONG A 2ML SAMPLE LASTS]. When you come back for the 50ml or 100ml, the £[PRICE] comes off. [HOW THE CREDIT IS APPLIED: code in the sample box or on your account].</p>
-              </>
+              <p className="flex items-center gap-4 text-[18px]"><Vial colour={s.colour} className="h-12 w-auto shrink-0" /><span>Buy the 2ml and wear it for a few days. If you buy the bottle, the sample price comes off.</span></p>
             ) : tried ? (
-              <>
-                <p className="text-[17px]">Sample credit applied: <b>−£[PRICE]</b> off the {size}.</p>
-                <p className="text-sm text-mute">You told us you have tried the {s.name} sample. The credit is confirmed at checkout. [HOW THE CREDIT IS APPLIED].</p>
-              </>
+              <p className="text-[18px]">Sample credit: the 2ml price comes off the {size}.</p>
             ) : (
-              <>
-                <p className="text-[17px]">Not smelt it yet? Start with the sample.</p>
-                <p className="text-sm text-mute">The £[PRICE] you pay for the 2ml comes off this {size} when you buy it. Nothing to lose by trying first.</p>
-              </>
+              <p className="text-[18px]">Not smelt it yet? Start with the 2ml; its price comes off this {size} later.</p>
             )}
+            <p className="text-base text-mute">[HOW THE CREDIT IS APPLIED]</p>
             <button type="button" aria-pressed={tried} onClick={() => { toggleSampled(s.handle); if (!tried) setSize("50ml"); }} className="chip self-start">{tried ? "I have the sample" : "I've already tried the sample"}</button>
           </div>
 
           <div className="flex flex-col gap-3">
-            <button type="button" disabled className="btn btn-ink min-h-14 cursor-not-allowed opacity-60">Online ordering opens at launch</button>
+            <button type="button" disabled className="btn min-h-14">Online ordering opens at launch</button>
             <a href={`tel:${SITE.phoneIntl}`} className="btn btn-ghost">Smell it in Tooting · {SITE.phone}</a>
-            <p className="text-center text-sm text-mute">Concept preview: sample scent. Names, notes, prices and stock come from the client at launch.</p>
+            <p className="text-center text-[14px] text-mute">Concept preview: sample scent.</p>
           </div>
 
-          <div className="border-t border-line">
-            <details open className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">The story</summary><p className="pb-4 text-mute">{s.story}</p></details>
-            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Concentration and how long it lasts</summary><p className="pb-4 text-mute">Eau de parfum, [CONCENTRATION]% fragrance oil. {s.strength === "Light" ? "Light: sits close to the skin and softens over [HOURS] hours." : "Present: a clear trail for the first hours, then close to the skin for [HOURS] hours."} [HOW MUCH TO APPLY].</p></details>
-            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Ingredients</summary><p className="pb-4 text-mute">[INGREDIENTS LIST]. [VEGAN / CRUELTY-FREE CLAIMS, IF CONFIRMED]. [STORAGE AND CARE ADVICE].</p></details>
-            <details className="border-b border-line"><summary className="flex min-h-12 cursor-pointer items-center">Delivery and returns</summary><p className="pb-4 text-mute">[DELIVERY TERMS]. [RETURNS WINDOW ON SEALED BOTTLES]. Opened bottles: this is why the sample comes first. Confirmed with the client before launch.</p></details>
+          <div className="flex flex-col gap-2">
+            <h2 className="label font-sans text-mute">Delivery and returns</h2>
+            <DeliveryRows />
+            <Link to="/delivery-returns" className="inline-flex min-h-11 items-center self-start underline underline-offset-4">Delivery and returns in full</Link>
           </div>
         </div>
       </section>
 
-      <section className="bg-sage py-16">
-        <div className="wrap grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
-          <div className="flex flex-col gap-4">
+      <section className="bg-sage py-14">
+        <div className="wrap grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:items-end">
+          <div className="flex flex-col gap-3">
             <p className="label text-mute">The notes</p>
-            <h2 className="text-[32px] sm:text-[40px]">What you smell at nine, at noon and at night.</h2>
-            <p className="text-[17px]">Top notes are what you smell in the first half hour. The heart is the afternoon. The base is what's left on your coat the next day.</p>
-            <dl className="grid gap-5 pt-2 sm:grid-cols-3">
-              {([["Top", s.notes.top], ["Heart", s.notes.heart], ["Base", s.notes.base]] as const).map(([k, v]) => (
-                <div key={k} className="flex flex-col gap-1 border-t border-ink pt-3">
-                  <dt className="label text-mute">{k}</dt>
-                  {v.map((n) => <dd key={n} className="text-[17px]">{n}</dd>)}
-                </div>
-              ))}
-            </dl>
+            <h2 className="text-[34px] sm:text-[44px]">Top, heart and base.</h2>
           </div>
-          <div className="rounded-pill bg-paper p-6 sm:p-10">
-            <NotesDiagram colour={s.colour} className="mx-auto w-full max-w-[420px]" />
-            <p className="mt-4 text-center text-sm text-mute">Top notes: {s.notes.top.join(", ").toLowerCase()}. Heart: {s.notes.heart.join(", ").toLowerCase()}. Base: {s.notes.base.join(", ").toLowerCase()}.</p>
+          <div className="flex flex-col gap-3 border-t border-ink pt-4">
+            <p className="text-[18px]">[NOTES TO COME]</p>
+            <p className="text-base text-mute">The top is the first half hour, the heart is the afternoon, the base is what's left on your coat the next day. Each scent page will list all three in plain words.</p>
           </div>
         </div>
       </section>
 
       {pairs.length > 0 && (
         <section className="wrap pt-16">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <h2 className="text-[32px] sm:text-[36px]">Wear it with</h2>
-            <p className="max-w-md text-sm text-mute">{isDark(s.colour) ? "Layer something lighter under it, or wear these on the days it feels like too much." : "Two that sit well beside it: one to layer, one for the days it's not quite enough."}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
+          <h2 className="mb-6 text-[34px] sm:text-[40px]">Wear it with</h2>
+          <div className="grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1.3fr]">
             {pairs.map((x) => <ScentCard key={x.handle} s={x} />)}
-            <Link to="/discovery-set" className="flex flex-col justify-end gap-2 rounded-pill bg-stone p-5 text-left"><Vial className="h-12 w-auto" /><span className="display text-[24px]">Or all seven as samples</span><span className="text-sm text-mute">The discovery set, £[PRICE]</span></Link>
+            <Link to="/discovery-set" className="group flex flex-col justify-between gap-4 rounded-pill bg-ink p-6 text-paper sm:col-span-2 lg:col-span-1">
+              <DiscoveryBox dark scents={store.scents()} className="w-full" />
+              <span className="flex flex-col gap-1"><span className="display text-[28px] group-hover:underline">Or all four as samples</span><span className="text-base text-mute-dark">The discovery set, £[SET PRICE]</span></span>
+            </Link>
           </div>
         </section>
       )}

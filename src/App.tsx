@@ -7,6 +7,7 @@ import { Range } from "./pages/Range";
 import { ScentPage } from "./pages/ScentPage";
 import { DiscoverySet } from "./pages/DiscoverySet";
 import { FinderPage, OurScents, Visit } from "./pages/Info";
+import { DeliveryReturns, GiftBoxPage, SeasonalEdition } from "./pages/Extras";
 import { NotFound } from "./pages/NotFound";
 
 function ScrollTop() {
@@ -32,6 +33,9 @@ export default function App() {
             <Route path="/scent-finder" element={<FinderPage />} />
             <Route path="/our-scents" element={<OurScents />} />
             <Route path="/visit" element={<Visit />} />
+            <Route path="/gift-box" element={<GiftBoxPage />} />
+            <Route path="/seasonal-edition" element={<SeasonalEdition />} />
+            <Route path="/delivery-returns" element={<DeliveryReturns />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
