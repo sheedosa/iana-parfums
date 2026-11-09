@@ -44,12 +44,12 @@ const today = new Date().toISOString().slice(0, 10);
 writeFileSync(join(dist, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((r) => `  <url><loc>${SITE}${r === "/" ? "/" : r}</loc><lastmod>${today}</lastmod><changefreq>${r.startsWith("/scents") ? "weekly" : "monthly"}</changefreq><priority>${r === "/" ? "1.0" : r.startsWith("/range") || r.startsWith("/scents") ? "0.9" : "0.7"}</priority></url>`).join("\n")}\n</urlset>\n`);
 
 const fams = cat.families.map((f) => `- [${f.title}](${SITE}/range/${f.handle}): ${f.blurb}`).join("\n");
-const scents = cat.scents.map((s) => `- [${s.name} ${s.family}](${SITE}/scents/${s.handle}): sample scent. ${s.family}, ${s.strength.toLowerCase()}, for ${s.when === "Both" ? "day or evening" : s.when.toLowerCase()}. Notes to come.`).join("\n");
+const scents = cat.scents.map((s) => `- [${s.name}](${SITE}/scents/${s.handle}): sample scent, working name. ${s.family}, ${s.strength.toLowerCase()}, for ${s.when === "Both" ? "day or evening" : s.when.toLowerCase()}. Notes to come.`).join("\n");
 writeFileSync(join(dist, "llms.txt"), `# I&A Parfums
 
 > Eau de parfum from I & A Fashions Limited (trading as I & A Parfums, a working name), a family business at 84 Mitcham Road, Tooting, London SW17 9NG, trading since 1993. Every scent is sold as a 2ml sample before the bottle; bottles from £150. A discovery set holds all four samples, a gift box holds a bottle, and a seasonal edition (a scent for the season, a few times a year) is coming. A three-question scent finder (when, family, strength) points to one or two scents. Standard delivery £4.95 (5 working days), express £7.95 (48 hours), free on orders of £100 and over, click and collect in Tooting; 28-day returns. Open Monday to Sunday 9am to 6pm. Phone 020 8767 8613. Sister shops: I&A Fashions, I&A Tailoring, I&A Schoolwear.
 
-Note: this site is a concept preview. The four scents are placeholders (one per family); names, notes and the 2ml price are to come; ordering opens at launch.
+Note: this site is a concept preview. The four scents are placeholders with working names (Wandle, Furzedown, Common, Mitcham; one per family); names, notes and the 2ml price are to come; ordering opens at launch.
 
 ## Families
 ${fams}

@@ -32,7 +32,7 @@ export const SITE = {
   preview: true, // concept preview: sample scents, ordering switched off
   toConfirm: [
     "Brand name (client considering M.H.T); I & A Parfums is the working name",
-    "the range: names, notes and stories (four samples here, one per family, named No. 1 to No. 4)",
+    "the range: names, notes and stories (four samples here, one per family, with working names Wandle, Furzedown, Common and Mitcham)",
     "whether the scents are the client's own or a bought-in range",
     "2ml sample price (shown as £[SAMPLE PRICE])",
     "per-scent bottle prices (sample prices shown; bottles from £150 is confirmed)",

@@ -18,7 +18,7 @@ export function ScentCard({ s, tall = false }: { s: Scent; tall?: boolean }) {
           : forYou ? <span className="label absolute left-3 top-3 rounded-pill bg-paper px-2 py-1.5 text-[11px] text-ink">For you</span> : null}
       </div>
       <h3 className="display mt-1 text-[28px] leading-tight group-hover:underline">{fullName(s)}</h3>
-      <p className="-mt-1 text-base text-mute">{s.strength}, for {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</p>
+      <p className="-mt-1 text-base text-mute">{s.family} · sample scent · {s.strength.toLowerCase()}, for {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</p>
       <p className="text-base">2ml £[SAMPLE PRICE] · 50ml {gbp(s.prices["50ml"])}</p>
     </Link>
   );

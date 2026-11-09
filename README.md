@@ -19,7 +19,7 @@ npm run build:spa    # without prerender
 
 ## What's real and what's sample
 - **Real:** business name, address, phone, hours, company and VAT numbers, brand (I&A brand guide 2022, Parfums lockup); bottles from £150; delivery (£4.95 standard, £7.95 express, free from £100, click and collect) and 28-day returns, shown on `/delivery-returns`, product pages and the footer.
-- **Sample:** the four scents in `src/data/scents.json` (placeholder names No. 1 to No. 4, swatch colours, bottle prices of £150 and up), the discovery set, gift box and seasonal edition. Notes are `[NOTES TO COME]`, the 2ml price is `£[SAMPLE PRICE]`. Ordering is switched off (`SITE.preview`).
+- **Sample:** the four scents in `src/data/scents.json` (working names Wandle, Furzedown, Common and Mitcham, swatch colours, bottle prices of £150 and up), the discovery set, gift box and seasonal edition. Notes are `[NOTES TO COME]`, the 2ml price is `£[SAMPLE PRICE]`. Ordering is switched off (`SITE.preview`).
 - **Proposed:** the working name "I & A Parfums" (client considering M.H.T); the sample credit (sample price off the bottle) and the discovery-set credit (`£[SAMPLE CREDIT]`), which the client confirms.
 - Open questions for the client are in `SITE.toConfirm` and every unknown fact appears on the page as `[A LABELLED PLACEHOLDER]`.
 

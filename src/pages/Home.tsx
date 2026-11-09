@@ -7,7 +7,7 @@ import { SITE, gbp } from "../data/site";
 
 export function Home() {
   const scents = store.scents();
-  const hero = store.scent("no-3-woody") ?? scents[0];
+  const hero = store.scent("common") ?? scents[0];
   return (
     <>
       <Seo title="Smell it first. Eau de parfum from Tooting" path="/" description={`Eau de parfum from I & A in Tooting, London. Every scent comes as a 2ml sample before the bottle, and bottles start at ${gbp(SITE.bottlesFrom)}. Discovery set, gift box and a seasonal edition.`} />
@@ -50,7 +50,7 @@ export function Home() {
                 <Link to={`/scents/${s.handle}`} className="lift group flex flex-col gap-3">
                   <span className="flex h-[190px] items-end justify-center border-b border-paper/60 sm:h-[300px]"><Bottle scent={s} dark className="h-full w-full" /></span>
                   <span className="display text-[26px] leading-tight text-paper group-hover:underline">{fullName(s)}</span>
-                  <span className="-mt-2 text-base text-mute-dark">{s.strength}, {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</span>
+                  <span className="-mt-2 text-base text-mute-dark">{s.family} · {s.strength.toLowerCase()}, {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</span>
                 </Link>
               </li>
             ))}

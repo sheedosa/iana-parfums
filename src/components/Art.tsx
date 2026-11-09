@@ -98,7 +98,7 @@ export function BottleArt({ scent, dark = false, plain = false, transform, label
       {!plain && (
         <g textAnchor="middle" fill={INK}>
           <text x={CX} y={ly - s.lh / 2 + 8.5} fontSize={narrow ? 3.7 : 4.2} letterSpacing={narrow ? 0.55 : 0.9} fontFamily="Lexend, sans-serif">I &amp; A PARFUMS</text>
-          <text x={CX} y={ly + 4} fontSize={s.lh > 45 ? 15 : 13.5} fontWeight="700" fontFamily="'Cormorant Garamond', Georgia, serif">{big}</text>
+          <text x={CX} y={ly + 4} fontSize={Math.min(s.lh > 45 ? 15 : 13.5, (s.lw - 8) / (big.length * 0.46))} fontWeight="700" fontFamily="'Cormorant Garamond', Georgia, serif">{big}</text>
           <path d={`M${CX - 7} ${ly + 8.5}H${CX + 7}`} stroke={INK} strokeWidth=".6" />
           <text x={CX} y={ly + 15} fontSize="4.6" letterSpacing="1.1" fontFamily="Lexend, sans-serif">{small}</text>
         </g>
@@ -137,7 +137,7 @@ export function Vial({ colour = SAGE, dark = false, className = "" }: { colour?:
 /* ---------- Hero still life: the bottle with its sample beside it ---------- */
 export function HeroStill({ scent, className = "" }: { scent: Scent; className?: string }) {
   return (
-    <svg viewBox="0 0 300 300" className={className} role="img" aria-label={`${scent.name} ${scent.family}, a 50ml bottle, with its 2ml sample vial beside it`}>
+    <svg viewBox="0 0 300 300" className={className} role="img" aria-label={`${scent.name}, a ${scent.family.toLowerCase()} scent: a 50ml bottle, with its 2ml sample vial beside it`}>
       {/* a low Sage plinth the bottle and its sample stand on */}
       <rect x="10" y="262" width="280" height="30" rx="2" fill={SAGE} stroke={PAPER} strokeWidth="1.5" {...NS} />
       <path d="M10 270H290" stroke={INK} strokeWidth="1" opacity=".2" {...NS} />
@@ -152,7 +152,7 @@ export function DiscoveryBox({ scents, className = "", dark = false }: { scents:
   const line = dark ? PAPER : INK;
   const xs = scents.map((_, i) => 96 + i * 46);
   return (
-    <svg viewBox="0 0 400 280" className={className} role="img" aria-label={`The discovery set: an open box with ${scents.length} sample vials (${scents.map((s) => `${s.name} ${s.family}`).join(", ")}) and a notes card`}>
+    <svg viewBox="0 0 400 280" className={className} role="img" aria-label={`The discovery set: an open box with ${scents.length} sample vials (${scents.map((s) => s.name).join(", ")}) and a notes card`}>
       {/* lid, standing open behind the tray */}
       <rect x="40" y="14" width="320" height="150" rx="3" fill={DEEP} stroke={line} strokeWidth="1.5" {...NS} />
       <rect x="52" y="26" width="296" height="126" rx="1.5" fill="none" stroke={PAPER} strokeWidth="1" opacity=".35" {...NS} />
@@ -178,7 +178,7 @@ export function DiscoveryBox({ scents, className = "", dark = false }: { scents:
 /* ---------- The gift box: a lidded box with a band, the bottle standing in front ---------- */
 export function GiftBox({ scent, className = "" }: { scent: Scent; className?: string }) {
   return (
-    <svg viewBox="0 0 400 300" className={className} role="img" aria-label={`A lidded gift box with a paper band, and a bottle of ${scent.name} ${scent.family} standing in front of it`}>
+    <svg viewBox="0 0 400 300" className={className} role="img" aria-label={`A lidded gift box with a paper band, and a bottle of ${scent.name} standing in front of it`}>
       <path d="M8 292H392" stroke={INK} strokeWidth="1.5" {...NS} />
       {/* the box, its lid a little wider than the base */}
       <rect x="170" y="112" width="192" height="180" rx="2" fill={INK} stroke={INK} strokeWidth="1.5" {...NS} />
@@ -188,7 +188,7 @@ export function GiftBox({ scent, className = "" }: { scent: Scent; className?: s
       <rect x="170" y="186" width="192" height="58" fill={SAGE} stroke={INK} strokeWidth="1.5" {...NS} />
       <path d="M170 192H362M170 238H362" stroke={INK} strokeWidth=".75" opacity=".35" {...NS} />
       <text x="266" y="210" textAnchor="middle" fontSize="7.5" letterSpacing="2.2" fill={INK} fontFamily="Lexend, sans-serif">I &amp; A PARFUMS</text>
-      <text x="266" y="230" textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="'Cormorant Garamond', Georgia, serif">{`${scent.name} ${scent.family}`}</text>
+      <text x="266" y="230" textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="'Cormorant Garamond', Georgia, serif">{scent.name}</text>
       {/* the bottle, in front */}
       <g transform="translate(76 56)"><BottleArt scent={scent} /></g>
     </svg>

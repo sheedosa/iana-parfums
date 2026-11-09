@@ -13,7 +13,7 @@ export type When = (typeof WHENS)[number];
 
 export type Scent = {
   handle: string;
-  name: string; // placeholder name in the house style, "No. 1"
+  name: string; // working name for the preview, e.g. "Wandle"
   family: Family;
   strength: Strength;
   when: When | "Both";
@@ -27,8 +27,8 @@ export type FamilyPage = { handle: string; title: string; blurb: string };
 
 const d = data as unknown as { families: FamilyPage[]; scents: Scent[] };
 
-/** "No. 1 Fresh": the name as it reads on the label and in headings. */
-export const fullName = (s: Scent) => `${s.name} ${s.family}`;
+/** The name as it reads on the label and in headings. The family is shown beside it, never inside it. */
+export const fullName = (s: Scent) => s.name;
 
 /** Price text for a size. The 2ml price is not confirmed; bottle prices are samples. */
 export const priceText = (s: Scent, size: Size) => (size === "2ml sample" ? "£[SAMPLE PRICE]" : gbp(s.prices[size]));

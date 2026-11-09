@@ -52,7 +52,8 @@ export function ScentPage() {
         <div className="flex flex-col gap-2 lg:col-start-2 lg:row-start-1">
           <nav aria-label="Breadcrumb" className="crumbs text-[15px] text-mute"><Link to="/">Home</Link> · <Link to="/range">The range</Link> · <Link to={`/range/${fam}`}>{s.family}</Link></nav>
           <h1 className="text-[44px] sm:text-[60px]">{name}</h1>
-          <p className="text-[18px]">Eau de parfum · {s.strength} · for {whenText}</p>
+          <p className="text-[18px]">{s.family} eau de parfum · {s.strength} · for {whenText}</p>
+          <p className="label text-mute">Sample scent · working name</p>
           <p className="text-[18px]"><b>2ml sample £[SAMPLE PRICE]</b> <span className="text-mute">· 50ml {gbp(s.prices["50ml"])} · 100ml {gbp(s.prices["100ml"])}</span></p>
         </div>
 

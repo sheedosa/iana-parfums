@@ -1,5 +1,5 @@
 {
-  "_note": "Concept preview range. Every scent is a SAMPLE: four placeholders, one per family, until the client sends names, notes and stories. Bottle prices are sample prices (bottles from £150 is confirmed); the 2ml sample price is not confirmed. Strength and when are sample attributes for the scent finder.",
+  "_note": "Concept preview range. Every scent is a SAMPLE: four placeholders with working names (places near the shop in Tooting), one per family, until the client sends names, notes and stories. Bottle prices are sample prices (bottles from £150 is confirmed); the 2ml sample price is not confirmed. Strength and when are sample attributes for the scent finder.",
   "families": [
     { "handle": "fresh", "title": "Fresh", "blurb": "The family of citrus, green leaves and clean air. Usually the lightest to wear." },
     { "handle": "floral", "title": "Floral", "blurb": "The family of flowers, from a single soft petal to a full bouquet." },
@@ -8,51 +8,51 @@
   ],
   "scents": [
     {
-      "handle": "no-1-fresh",
-      "name": "No. 1",
+      "handle": "wandle",
+      "name": "Wandle",
       "family": "Fresh",
       "strength": "Light",
       "when": "Day",
       "colour": "#b7c7b4",
       "cap": "#45353a",
       "prices": { "50ml": 150, "100ml": 210 },
-      "pairs": ["no-3-woody", "no-2-floral"],
+      "pairs": ["common", "furzedown"],
       "sizes": ["2ml sample", "50ml", "100ml"]
     },
     {
-      "handle": "no-2-floral",
-      "name": "No. 2",
+      "handle": "furzedown",
+      "name": "Furzedown",
       "family": "Floral",
       "strength": "Light",
       "when": "Both",
       "colour": "#e6c6ca",
       "cap": "#fbfbf9",
       "prices": { "50ml": 150, "100ml": 210 },
-      "pairs": ["no-1-fresh", "no-4-warm"],
+      "pairs": ["wandle", "mitcham"],
       "sizes": ["2ml sample", "50ml", "100ml"]
     },
     {
-      "handle": "no-3-woody",
-      "name": "No. 3",
+      "handle": "common",
+      "name": "Common",
       "family": "Woody",
       "strength": "Present",
       "when": "Both",
       "colour": "#c8a98d",
       "cap": "#2a2326",
       "prices": { "50ml": 160, "100ml": 225 },
-      "pairs": ["no-1-fresh", "no-4-warm"],
+      "pairs": ["wandle", "mitcham"],
       "sizes": ["2ml sample", "50ml", "100ml"]
     },
     {
-      "handle": "no-4-warm",
-      "name": "No. 4",
+      "handle": "mitcham",
+      "name": "Mitcham",
       "family": "Warm",
       "strength": "Present",
       "when": "Evening",
       "colour": "#b98a52",
       "cap": "#45353a",
       "prices": { "50ml": 165, "100ml": 235 },
-      "pairs": ["no-3-woody", "no-2-floral"],
+      "pairs": ["common", "furzedown"],
       "sizes": ["2ml sample", "50ml", "100ml"]
     }
   ]

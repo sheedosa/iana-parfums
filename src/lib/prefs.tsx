@@ -16,7 +16,7 @@ const KEY_A = "iana-parfums-finder", KEY_S = "iana-parfums-sampled", KEY_I = "ia
 function read<T>(key: string): T | null { try { const v = localStorage.getItem(key); return v ? (JSON.parse(v) as T) : null; } catch { return null; } }
 function write(key: string, v: unknown) { try { if (v === null) localStorage.removeItem(key); else localStorage.setItem(key, JSON.stringify(v)); } catch { /* private mode */ } }
 
-const HANDLES = /^no-[1-4]-(fresh|floral|woody|warm)$/;
+const HANDLES = /^(wandle|furzedown|common|mitcham)$/;
 const FAMS = ["Fresh", "Floral", "Woody", "Warm"];
 
 export function PrefsProvider({ children }: { children: ReactNode }) {

@@ -46,7 +46,7 @@ export function DiscoverySet() {
             <li key={s.handle} className="border-t border-line">
               <Link to={`/scents/${s.handle}`} className="flex min-h-20 items-center gap-5 py-4">
                 <Vial colour={s.colour} className="h-16 w-auto shrink-0" />
-                <span className="flex flex-col"><span className="display text-[26px] leading-tight underline-offset-4 hover:underline">{fullName(s)}</span><span className="text-base text-mute">{s.strength}, {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</span></span>
+                <span className="flex flex-col"><span className="display text-[26px] leading-tight underline-offset-4 hover:underline">{fullName(s)}</span><span className="text-base text-mute">{s.family} · {s.strength.toLowerCase()}, {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</span></span>
                 {sampled.includes(s.handle) && <span className="label ml-auto rounded-pill bg-ink px-2 py-1.5 text-[11px] text-paper">Sampled</span>}
               </Link>
             </li>
