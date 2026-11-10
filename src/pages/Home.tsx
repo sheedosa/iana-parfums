@@ -1,57 +1,33 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
-import { ScentFinder } from "../components/ScentFinder";
-import { Bottle, DiscoveryBox, GiftBox, SeasonalBox, Vial, mix } from "../components/Art";
+import { Bottle, wash } from "../components/Art";
+import { FitName, useEm } from "../components/FitName";
+import { OtherWays, Slip } from "../components/Rows";
 import { VLink, bottleVT } from "../components/VLink";
-import { usePrefs } from "../lib/prefs";
-import { scentLine } from "../components/ScentCard";
-import { findScents, fullName, store, type Scent } from "../lib/store";
+import { scentLine } from "../lib/words";
+import { useSetCurrent } from "../lib/stage";
+import { fullName, store, type Scent } from "../lib/store";
 import { SITE, gbp } from "../data/site";
 
-/** The hero is the range: four bottles on one shelf. Choose one and it steps forward, the ground takes its tint
-    and its details read beside it. Opens on your finder pick if you have one. */
-function Shelf({ scents }: { scents: Scent[] }) {
-  const { answers } = usePrefs();
-  const pick = answers ? findScents(answers)[0]?.handle : undefined;
-  const [handle, setHandle] = useState(pick ?? "common");
-  const s = scents.find((x) => x.handle === handle) ?? scents[0];
+/** One scent, one screen: the name across the width, the bottle, one line and the way in. */
+function Screen({ s, first }: { s: Scent; first: boolean }) {
+  const name = fullName(s);
+  const fam = store.family(s.family.toLowerCase());
+  const em = useEm(name);
   return (
-    <section className="tint on-ink overflow-hidden text-paper" style={{ backgroundColor: mix("#45353a", s.colour, 0.09) }}>
-      <div className="wrap flex flex-col pb-10 pt-8 sm:pt-12 lg:pb-14">
-        <h1 className="t-hero text-paper">Smell it first.</h1>
-        <div className="mt-5 grid gap-x-14 gap-y-6 lg:-mt-8 lg:grid-cols-[minmax(0,21rem)_1fr] lg:items-end">
-          <div className="flex flex-col gap-6">
-            <p className="t-lede text-paper">Every scent comes as a 2ml sample before the bottle. Wear it for a few days; if you buy the bottle, the sample price comes off.</p>
-            <div className="hidden flex-col gap-3 lg:flex">
-              <Link to="/range" className="btn btn-paper">See the four scents</Link>
-              <Link to="/discovery-set" className="btn btn-outline-paper">All four as samples</Link>
-            </div>
+    <section data-scent={s.handle} aria-labelledby={`name-${s.handle}`} className="screen" style={{ ["--em" as string]: em.toFixed(4), backgroundColor: wash(s.colour) } as CSSProperties}>
+      <div className="wrap">
+        <h2 id={`name-${s.handle}`}><FitName text={name} /></h2>
+        <div className="mt-6 grid items-end gap-x-10 gap-y-6 md:mt-4 md:grid-cols-12">
+          <VLink to={`/scents/${s.handle}`} tabIndex={-1} aria-hidden="true" className={`stand screen-bottle md:order-2 md:col-span-4 md:col-start-8 md:justify-start ${first ? "rise" : ""}`}>
+            <span className="flex h-full" style={bottleVT(s.handle)}><Bottle scent={s} /></span>
+          </VLink>
+          <div className="flex flex-col items-start gap-3 md:order-1 md:col-span-6 md:pb-6">
+            <p className="t-lede">{scentLine(s)}</p>
+            {fam && <p className="measure text-mute">{fam.blurb}</p>}
+            <VLink to={`/scents/${s.handle}`} className="act mt-2">Sample it<span className="sr-only">: {name}</span></VLink>
           </div>
-
-          <div className="flex min-w-0 flex-col">
-            <div role="group" aria-label="Choose a scent" className="flex h-[clamp(140px,24vw,310px)] items-end border-b border-paper/70">
-              {scents.map((x, i) => (
-                <button key={x.handle} type="button" aria-pressed={x.handle === s.handle} onClick={() => setHandle(x.handle)}
-                  className="shelf-btn rise h-full" style={{ ["--i" as string]: i }}>
-                  <span className="flex h-full w-full items-end" style={bottleVT(x.handle)}><Bottle scent={x} dark /></span>
-                  <span className="sr-only">{fullName(x)}, {x.family.toLowerCase()}</span>
-                </button>
-              ))}
-            </div>
-            <div key={s.handle} className="swap flex flex-wrap items-end justify-between gap-x-8 gap-y-4 pt-5" aria-live="polite">
-              <div className="flex flex-col gap-1">
-                <p className="display t-h1 text-paper">{fullName(s)}</p>
-                <p className="voice text-paper">{scentLine(s)}</p>
-                <p className="text-base text-mute-dark">A working name. 2ml sample £⁠[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}.</p>
-              </div>
-              <VLink to={`/scents/${s.handle}`} className="btn btn-paper">Open {fullName(s)}</VLink>
-            </div>
-          </div>
-        </div>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:hidden">
-          <Link to="/range" className="btn btn-outline-paper">See the four scents</Link>
-          <Link to="/discovery-set" className="btn btn-outline-paper">All four as samples</Link>
         </div>
       </div>
     </section>
@@ -59,70 +35,43 @@ function Shelf({ scents }: { scents: Scent[] }) {
 }
 
 export function Home() {
-  const scents = store.scents();
+  const scents = useMemo(() => store.scents(), []);
+  const setCurrent = useSetCurrent();
+  const box = useRef<HTMLDivElement>(null);
+
+  // The page takes the wash of the scent on screen, and that bottle steps forward in the dock.
+  useEffect(() => {
+    setCurrent(scents[0]?.handle ?? null);
+    const root = box.current;
+    if (!root || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) setCurrent((e.target as HTMLElement).dataset.scent || null);
+    }, { rootMargin: "-45% 0px -45% 0px" });
+    root.querySelectorAll("[data-scent]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [scents, setCurrent]);
+
   return (
-    <>
-      <Seo title="Smell it first. Eau de parfum from Tooting" path="/" description={`Eau de parfum from I & A in Tooting, London. Every scent comes as a 2ml sample before the bottle, and bottles start at ${gbp(SITE.bottlesFrom)}. Discovery set, gift box and a seasonal edition.`} />
+    <div ref={box}>
+      <Seo title="Eau de parfum from Tooting, sampled before the bottle" path="/" description={`Eau de parfum from I & A in Tooting, London. Every scent comes as a 2ml sample before the bottle, and bottles start at ${gbp(SITE.bottlesFrom)}. Discovery set, gift box and a seasonal edition.`} />
 
-      <Shelf scents={scents} />
+      <div className="wrap">
+        <h1 className="font-sans text-base font-normal">Four eaux de parfum from Tooting, each sold as a 2ml sample before the bottle.</h1>
+      </div>
 
-      <section className="wrap grid items-start gap-x-14 gap-y-10 py-16 sm:py-24 lg:grid-cols-[auto_1.2fr_1fr]">
-        <Vial colour="#c8a98d" className="hidden h-[340px] w-auto lg:block" />
-        <div className="flex flex-col gap-6">
-          <h2 className="t-h1">You can't smell a website. So the sample comes first.</h2>
-          <p className="t-lede max-w-[34rem]">Choose a scent and we send it as a 2ml vial. Wear it on skin, at work and in the evening: a perfume at noon is not the perfume at nine.</p>
-          <p className="t-lede max-w-[34rem]">If it's the one, buy the bottle and the sample price comes off. If it isn't, you've spent the price of a sample, not a bottle.</p>
-          <Link to="/our-scents#sample" className="link self-start">How the sample credit works</Link>
-        </div>
-        <div className="slip flex flex-col px-6 pb-6 pt-5 lg:mt-3" role="group" aria-label="How the sample credit reads on your order">
-          <p className="voice pb-2">On your order</p>
-          <p className="slip-row"><span>50ml bottle</span><span className="fig t-h3">{gbp(SITE.bottlesFrom)}</span></p>
-          <p className="slip-row"><span>Your 2ml sample, already paid</span><span className="whitespace-nowrap">less £⁠[SAMPLE PRICE]</span></p>
-          <p className="pt-4 text-base text-mute">The bottle costs what it costs, less the sample you tried first.</p>
-        </div>
+      {scents.map((s, i) => <Screen key={s.handle} s={s} first={i === 0} />)}
+
+      <section data-scent="" className="wrap flex flex-col gap-6 pb-10 pt-24">
+        <h2>How the sample works</h2>
+        <p className="t-lede col">Choose a scent and we send it as a 2ml vial. Wear it on your skin for a few days, at work and in the evening. If you then buy the 50ml or the 100ml, the price of the sample comes off the bottle.</p>
+        <Slip bottle={gbp(SITE.bottlesFrom)} sample="£⁠[SAMPLE PRICE]" />
+        <Link to="/our-scents#sample" className="link self-start">More on the sample credit</Link>
       </section>
 
-      <ScentFinder id="finder"><h2>Not sure where to start? Three questions.</h2></ScentFinder>
-
-      <section className="py-16 sm:py-24">
-        <div className="wrap grid min-w-0 items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
-          <div className="flex flex-col gap-5">
-            <h2 className="t-h1">All four, 2ml each, in one box.</h2>
-            <p className="t-lede">The whole range as samples, with a card to note what you thought of each. Wear a different one each day, then come back for the bottle.</p>
-            <p className="text-base text-mute">Set price £⁠[SET PRICE].</p>
-            <Link to="/discovery-set" className="btn btn-ink self-start">The discovery set</Link>
-          </div>
-          <DiscoveryBox scents={scents} className="w-full max-w-[560px] justify-self-center" />
-        </div>
+      <section data-scent="" className="wrap flex flex-col gap-4 pt-16">
+        <h2>Other ways to buy</h2>
+        <OtherWays />
       </section>
-
-      <section className="wrap grid gap-6 pb-16 sm:pb-24 lg:grid-cols-[1.25fr_1fr]">
-        <Link to="/gift-box" className="group grid items-center gap-6 rounded-pill bg-sage p-6 sm:grid-cols-[1fr_1.1fr] sm:p-8">
-          <div className="flex flex-col gap-3">
-            <h2 className="t-h2 group-hover:underline">The gift box</h2>
-            <p className="voice text-mute">For someone else</p>
-            <p className="text-base">A bottle from the range, boxed for giving.</p>
-            <p className="text-base text-mute">Price £⁠[GIFT BOX PRICE]</p>
-          </div>
-          <GiftBox scent={scents[1]} className="w-full" />
-        </Link>
-        <Link to="/seasonal-edition" className="on-ink group flex flex-col justify-between gap-6 rounded-pill bg-ink p-6 text-paper sm:p-8">
-          <SeasonalBox dark scent={{ name: "", family: "Fresh", colour: "#c9b6c7", cap: "#45353a" }} className="w-full max-w-[380px]" />
-          <div className="flex flex-col gap-3">
-            <h2 className="t-h2 text-paper group-hover:underline">The seasonal edition</h2>
-            <p className="voice text-sage">Coming soon</p>
-            <p className="text-base text-mute-dark">A scent for the season, sent a few times a year. Register your interest.</p>
-          </div>
-        </Link>
-      </section>
-
-      <section className="wrap flex flex-wrap items-center justify-between gap-6 border-t border-line pt-12">
-        <div className="flex max-w-xl flex-col gap-2">
-          <h2 className="t-h2">{SITE.address.street}, {SITE.address.area}.</h2>
-          <p className="text-base text-mute">Open {SITE.hours}. Try every scent at the counter, or click and collect your order. Part of the I&amp;A family, in Tooting since {SITE.since}.</p>
-        </div>
-        <div className="flex flex-wrap gap-3"><Link to="/visit" className="btn btn-ink">Visit the shop</Link><a href={`tel:${SITE.phoneIntl}`} className="btn btn-ghost">{SITE.phone}</a></div>
-      </section>
-    </>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { Header, Footer } from "./components/Layout";
+import { Dock, Footer, Header } from "./components/Layout";
+import { StageProvider } from "./lib/stage";
 import { PrefsProvider } from "./lib/prefs";
 import { Home } from "./pages/Home";
 import { Range } from "./pages/Range";
@@ -19,9 +20,9 @@ function ScrollTop() {
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <PrefsProvider>
+      <PrefsProvider><StageProvider>
         <ScrollTop />
-        <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-pill focus:bg-paper focus:px-4 focus:py-3">Skip to content</a>
+        <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-bone focus:px-4 focus:py-3 focus:text-deep">Skip to content</a>
         <Header />
         <main id="main">
           <Routes>
@@ -40,7 +41,8 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
-      </PrefsProvider>
+        <Dock />
+      </StageProvider></PrefsProvider>
     </BrowserRouter>
   );
 }

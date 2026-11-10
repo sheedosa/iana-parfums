@@ -7,7 +7,7 @@ Concept preview of the I&A Parfums store: a short range of four scents (one per 
 ## Stack
 Vite + React 19 + TypeScript + Tailwind v4, react-router, deployed to GitHub Pages by `.github/workflows/deploy.yml`.
 Every route is prerendered to static HTML (`scripts/prerender.mjs`) with titles, meta, Open Graph, JSON-LD, `sitemap.xml` and `llms.txt`.
-All imagery is drawn in code (`src/components/Art.tsx`: a bottle per family, vial, discovery box, gift box, seasonal box, photo slots); there are no photographs yet.
+All imagery is drawn in code (`src/components/Art.tsx`: one house bottle in each scent's colour, the vial and the gift box, on dark); there are no photographs yet.
 
 ## Commands
 ```bash
@@ -24,8 +24,8 @@ npm run build:spa    # without prerender
 - Open questions for the client are in `SITE.toConfirm` and every unknown fact appears on the page as `[A LABELLED PLACEHOLDER]`.
 
 ## The two ideas
-- **Smell it first.** Every scent page defaults to the 2ml sample. Pressing "I've already tried the sample" (saved on the device) switches the page to the bottle with the credit shown; sampled scents are flagged across the range. The discovery set can mark all four at once.
-- **Scent finder.** When (day/evening), family (fresh/floral/woody/warm), strength (light/present). `findScents()` in `src/lib/store.ts` ranks the range and returns one or two; answers are saved in `localStorage` and shown in the header strip, with matches noted as "Your finder pick" on the range. The result is shown the way the Home shelf works: the picked bottle steps forward and the band takes its tint.
+- **Sample first.** Every scent page defaults to the 2ml sample. Choosing "I have tried the 2ml sample" (saved on the device) switches the page to the bottle with the credit shown; sampled scents are flagged across the range. The discovery set can mark all four at once.
+- **Scent finder.** When (day/evening), family (fresh/floral/woody/warm), strength (light/present). `findScents()` in `src/lib/store.ts` ranks the range and returns one or two; answers are saved in `localStorage`; the first pick is marked "Your pick" in the dock at the bottom of every page, the page takes that scent's wash and its bottle steps forward.
 
 ## Going live
 1. Replace `scents.json` with the client's range, or port `ShopifyStorefront` from the schoolwear repo into `src/lib/store.ts` (Size as the variant option: 2ml sample / 50ml / 100ml; family, strength and when as metafields; the discovery set as its own product).
