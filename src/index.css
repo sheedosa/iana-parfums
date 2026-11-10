@@ -39,7 +39,8 @@
   }
   ::view-transition-group(*) { animation-duration: 480ms; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
-  html { background: var(--wash); }
+  /* Keyboard focus and in-page links stop clear of the dock. */
+  html { background: var(--wash); scroll-padding-bottom: calc(var(--dock-h) + 1.5rem); }
   body { background: var(--wash); color: var(--color-bone); font-family: var(--font-sans); font-size: 1.0625rem; font-weight: 400; line-height: 1.55; -webkit-font-smoothing: antialiased; padding-bottom: calc(var(--dock-h) + env(safe-area-inset-bottom)); transition: background-color var(--dur-3) var(--ease-out); }
   strong, b { font-weight: 500; }
   /* Libre Bodoni is set with its own spacing: no negative tracking anywhere, kerning on, so capital W sits against the next letter. */

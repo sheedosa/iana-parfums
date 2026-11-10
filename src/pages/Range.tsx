@@ -57,7 +57,7 @@ export function Range() {
         <nav aria-label="Families" className="mt-4 flex flex-wrap gap-x-7">
           {[ALL, ...store.families()].map((x) => (
             <Link key={x.handle} to={x.handle === "all" ? "/range" : `/range/${x.handle}`} aria-current={x.handle === family ? "page" : undefined}
-              className={`inline-flex min-h-11 items-center underline-offset-[6px] hover:underline ${x.handle === family ? "underline decoration-amber decoration-2" : "text-mute"}`}>{x.handle === "all" ? "All four" : x.title}</Link>
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center underline-offset-[6px] hover:underline ${x.handle === family ? "underline decoration-amber decoration-2" : "text-mute"}`}>{x.handle === "all" ? "All four" : x.title}</Link>
           ))}
         </nav>
 
