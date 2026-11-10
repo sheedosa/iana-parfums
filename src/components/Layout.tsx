@@ -27,7 +27,7 @@ function Strip() {
   const { answers } = usePrefs();
   const picks = answers ? findScents(answers) : [];
   return (
-    <section aria-label="Notices" className="on-ink bg-ink text-paper">
+    <section aria-label="Notices" className="on-ink bg-deep text-paper">
       <div className="wrap flex min-h-9 items-center justify-between gap-3 text-[14px] tracking-wide">
         <p className="min-w-0 truncate">
           {answers
@@ -46,21 +46,21 @@ export function Header() {
   return (
     <>
       <Strip />
-      <header className="sticky top-0 z-40 border-b border-line bg-paper">
+      <header className="on-ink sticky top-0 z-40 border-b border-white/15 bg-ink text-paper">
         <div className="wrap flex min-h-16 items-center justify-between gap-4">
           <button type="button" className="inline-flex h-11 w-11 items-center justify-center lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
           </button>
-          <Link to="/" className="inline-flex min-h-11 shrink-0 items-center" onClick={() => setOpen(false)}><Logo className="h-6 w-auto sm:h-8" /></Link>
+          <Link to="/" className="inline-flex min-h-11 shrink-0 items-center" onClick={() => setOpen(false)}><Logo white className="h-6 w-auto sm:h-8" /></Link>
           <nav aria-label="Site" className="hidden gap-6 text-[15px] tracking-wide lg:flex">
-            {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 items-center border-b-2 ${isActive ? "border-ink" : "border-transparent hover:border-ink/40"}`}>{n.label}</NavLink>)}
+            {NAV.map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `inline-flex min-h-11 items-center border-b-2 ${isActive ? "border-paper" : "border-transparent hover:border-paper/50"}`}>{n.label}</NavLink>)}
           </nav>
           <Link to="/scent-finder" className="inline-flex min-h-11 items-center px-1 text-[15px] underline-offset-4 hover:underline sm:px-3">{answers ? "My scents" : <><span className="sm:hidden">Finder</span><span className="hidden sm:inline">Find my scent</span></>}</Link>
         </div>
         {open && (
-          <nav aria-label="Site" className="border-t border-line bg-paper lg:hidden">
+          <nav aria-label="Site" className="border-t border-white/15 bg-ink lg:hidden">
             <div className="wrap flex flex-col py-2">
-              {[...NAV, ...MORE].map((n, i, all) => <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className={`flex min-h-12 items-center text-lg ${i < all.length - 1 ? "border-b border-line" : ""}`}>{n.label}</Link>)}
+              {[...NAV, ...MORE].map((n, i, all) => <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className={`flex min-h-12 items-center text-lg ${i < all.length - 1 ? "border-b border-white/15" : ""}`}>{n.label}</Link>)}
             </div>
           </nav>
         )}
