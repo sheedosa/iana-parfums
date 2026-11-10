@@ -43,15 +43,24 @@ function Strip() {
 /** The phone menu: a full panel with the whole nav, then the phone number, the address and the hours. */
 function Menu({ onClose }: { onClose: () => void }) {
   const close = useRef<HTMLButtonElement>(null);
+  const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
     close.current?.focus();
-    const key = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") return onClose();
+      if (e.key !== "Tab" || !box.current) return;
+      // Keep Tab inside the panel while it is open.
+      const stops = [...box.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")];
+      const first = stops[0], last = stops[stops.length - 1], at = document.activeElement;
+      if (e.shiftKey && (at === first || !box.current.contains(at))) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (at === last || !box.current.contains(at))) { e.preventDefault(); first.focus(); }
+    };
     document.addEventListener("keydown", key);
     document.body.style.overflow = "hidden";
     return () => { document.removeEventListener("keydown", key); document.body.style.overflow = ""; };
   }, [onClose]);
   return (
-    <div role="dialog" aria-modal="true" aria-label="Menu" className="panel on-ink fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ink text-paper lg:hidden">
+    <div ref={box} role="dialog" aria-modal="true" aria-label="Menu" className="panel on-ink fixed inset-0 z-50 flex flex-col overflow-y-auto bg-ink text-paper lg:hidden">
       <div className="wrap flex min-h-16 shrink-0 items-center justify-between gap-4 border-b border-white/15">
         <button ref={close} type="button" className="inline-flex h-11 w-11 items-center justify-center" aria-label="Close menu" onClick={onClose}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>

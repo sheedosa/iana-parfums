@@ -25,7 +25,7 @@ export function FinderPage() {
           <dl className="rows border-b border-ink/20" style={{ ["--term" as string]: "8rem" }}>
             {store.families().map((f) => (
               <div key={f.handle}>
-                <dt className="display t-h3"><Link to={`/range/${f.handle}`} className="link min-h-0 decoration-1">{f.title}</Link></dt>
+                <dt className="display t-h3"><Link to={`/range/${f.handle}`} className="link decoration-1">{f.title}</Link></dt>
                 <dd className="text-base">{f.blurb}</dd>
               </div>
             ))}
@@ -82,7 +82,7 @@ export function OurScents() {
           <div className="slip flex flex-col px-6 pb-6 pt-5" role="group" aria-label="How the sample credit reads on your order">
             <p className="voice pb-2">On your order</p>
             <p className="slip-row"><span>50ml bottle</span><span className="fig t-h3">{gbp(SITE.bottlesFrom)}</span></p>
-            <p className="slip-row"><span>Your 2ml sample, already paid</span><span className="whitespace-nowrap">less £[SAMPLE PRICE]</span></p>
+            <p className="slip-row"><span>Your 2ml sample, already paid</span><span className="whitespace-nowrap">less £⁠[SAMPLE PRICE]</span></p>
             <p className="pt-4 text-base text-mute">The bottle costs what it costs, less the sample you tried first.</p>
           </div>
         </div>

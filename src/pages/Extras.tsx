@@ -52,7 +52,7 @@ export function GiftBoxPage() {
             </fieldset>
           </div>
           <div key={`${handle}-${size}`} className="swap flex flex-col gap-1 border-y border-line py-4" aria-live="polite">
-            <p className="flex flex-wrap items-baseline gap-x-3"><span className="fig t-h1">{gbp(s.prices[size])}</span><span className="text-base">{fullName(s)}, {size}, plus the box £[GIFT BOX PRICE]</span></p>
+            <p className="flex flex-wrap items-baseline gap-x-3"><span className="fig t-h1">{gbp(s.prices[size])}</span><span className="text-base">{fullName(s)}, {size}, plus the box £⁠[GIFT BOX PRICE]</span></p>
             <p className="text-base text-mute">Bottle prices are samples for this preview; bottles from {gbp(SITE.bottlesFrom)} is confirmed. What comes in the box: [GIFT BOX CONTENTS TO CONFIRM]</p>
           </div>
           <div ref={actions} className="flex flex-col items-start gap-2">
@@ -121,7 +121,7 @@ export function SeasonalEdition() {
           <dl className="rows border-b border-ink/20" style={{ ["--term" as string]: "13rem" }}>
             <div><dt className="display t-h4">Made for the season</dt><dd className="text-base">A few times a year, a scent chosen for the months it arrives in.</dd></div>
             <div><dt className="display t-h4">Sent to your door</dt><dd className="text-base">Each edition is posted to you in its own box. What each box holds: [EDITION CONTENTS TO CONFIRM]</dd></div>
-            <div><dt className="display t-h4">Price and how often</dt><dd className="text-base">£[PRICE PER EDITION], [HOW OFTEN IT IS SENT]. Registering interest costs nothing and commits you to nothing.</dd></div>
+            <div><dt className="display t-h4">Price and how often</dt><dd className="text-base">£⁠[PRICE PER EDITION], [HOW OFTEN IT IS SENT]. Registering interest costs nothing and commits you to nothing.</dd></div>
           </dl>
         </div>
 

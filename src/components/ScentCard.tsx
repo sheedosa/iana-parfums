@@ -28,7 +28,7 @@ export function ScentCard({ s }: { s: Scent }) {
       <span className="flex flex-col gap-1 pt-4">
         <h3 className="display t-h3 underline-offset-4 group-hover:underline">{fullName(s)}</h3>
         <span className="voice">{scentLine(s)}</span>
-        <span className="text-base text-mute">2ml sample £[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}. A working name.</span>
+        <span className="text-base text-mute">2ml sample £⁠[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}. A working name.</span>
         {note && <span className="text-base">{note}.</span>}
       </span>
     </VLink>

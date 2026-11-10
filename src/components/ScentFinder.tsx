@@ -73,7 +73,7 @@ export function ScentFinder({ children, id, lead = false }: { children?: ReactNo
                 <p className="text-base">Closest for {done.when.toLowerCase()}, {done.family.toLowerCase()} and {done.strength.toLowerCase()}. Saved on this device.</p>
                 <p className="display t-h1">{fullName(top)}</p>
                 <p className="voice">{scentLine(top)}</p>
-                <p className="text-base">2ml sample £[SAMPLE PRICE].{second && <> Also worth trying: <Link to={`/scents/${second.handle}`} className="link">{fullName(second)}</Link>.</>}</p>
+                <p className="text-base">2ml sample £⁠[SAMPLE PRICE].{second && <> Also worth trying: <Link to={`/scents/${second.handle}`} className="link">{fullName(second)}</Link>.</>}</p>
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-3 pt-2">
                   <VLink to={`/scents/${top.handle}`} carry={top.handle} className="btn btn-ink">Open {fullName(top)}</VLink>
                   <Link to="/discovery-set" className="link">Or try all four</Link>

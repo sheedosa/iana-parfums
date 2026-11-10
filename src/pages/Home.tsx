@@ -43,7 +43,7 @@ function Shelf({ scents }: { scents: Scent[] }) {
               <div className="flex flex-col gap-1">
                 <p className="display t-h1 text-paper">{fullName(s)}</p>
                 <p className="voice text-paper">{scentLine(s)}</p>
-                <p className="text-base text-mute-dark">A working name. 2ml sample £[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}.</p>
+                <p className="text-base text-mute-dark">A working name. 2ml sample £⁠[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}.</p>
               </div>
               <VLink to={`/scents/${s.handle}`} className="btn btn-paper">Open {fullName(s)}</VLink>
             </div>
@@ -77,7 +77,7 @@ export function Home() {
         <div className="slip flex flex-col px-6 pb-6 pt-5 lg:mt-3" role="group" aria-label="How the sample credit reads on your order">
           <p className="voice pb-2">On your order</p>
           <p className="slip-row"><span>50ml bottle</span><span className="fig t-h3">{gbp(SITE.bottlesFrom)}</span></p>
-          <p className="slip-row"><span>Your 2ml sample, already paid</span><span className="whitespace-nowrap">less £[SAMPLE PRICE]</span></p>
+          <p className="slip-row"><span>Your 2ml sample, already paid</span><span className="whitespace-nowrap">less £⁠[SAMPLE PRICE]</span></p>
           <p className="pt-4 text-base text-mute">The bottle costs what it costs, less the sample you tried first.</p>
         </div>
       </section>
@@ -89,7 +89,7 @@ export function Home() {
           <div className="flex flex-col gap-5">
             <h2 className="t-h1">All four, 2ml each, in one box.</h2>
             <p className="t-lede">The whole range as samples, with a card to note what you thought of each. Wear a different one each day, then come back for the bottle.</p>
-            <p className="text-base text-mute">Set price £[SET PRICE].</p>
+            <p className="text-base text-mute">Set price £⁠[SET PRICE].</p>
             <Link to="/discovery-set" className="btn btn-ink self-start">The discovery set</Link>
           </div>
           <DiscoveryBox scents={scents} className="w-full max-w-[560px] justify-self-center" />
@@ -102,7 +102,7 @@ export function Home() {
             <h2 className="t-h2 group-hover:underline">The gift box</h2>
             <p className="voice text-mute">For someone else</p>
             <p className="text-base">A bottle from the range, boxed for giving.</p>
-            <p className="text-base text-mute">Price £[GIFT BOX PRICE]</p>
+            <p className="text-base text-mute">Price £⁠[GIFT BOX PRICE]</p>
           </div>
           <GiftBox scent={scents[1]} className="w-full" />
         </Link>

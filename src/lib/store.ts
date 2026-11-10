@@ -31,7 +31,7 @@ const d = data as unknown as { families: FamilyPage[]; scents: Scent[] };
 export const fullName = (s: Scent) => s.name;
 
 /** Price text for a size. The 2ml price is not confirmed; bottle prices are samples. */
-export const priceText = (s: Scent, size: Size) => (size === "2ml sample" ? "£[SAMPLE PRICE]" : gbp(s.prices[size]));
+export const priceText = (s: Scent, size: Size) => (size === "2ml sample" ? "£⁠[SAMPLE PRICE]" : gbp(s.prices[size]));
 
 export const store = {
   families: (): FamilyPage[] => d.families,

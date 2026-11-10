@@ -34,7 +34,7 @@ export const SITE = {
     "Brand name (client considering M.H.T); I & A Parfums is the working name",
     "the range: names, notes and stories (four samples here, one per family, with working names Wandle, Furzedown, Common and Mitcham)",
     "whether the scents are the client's own or a bought-in range",
-    "2ml sample price (shown as £[SAMPLE PRICE])",
+    "2ml sample price (shown as £⁠[SAMPLE PRICE])",
     "per-scent bottle prices (sample prices shown; bottles from £150 is confirmed)",
     "Proposed: the sample credit (the 2ml price comes off the bottle) and how it is applied",
     "discovery set price and whether it is credited in full or in part",

@@ -29,7 +29,7 @@ export function DiscoverySet() {
             <nav aria-label="Breadcrumb" className="crumbs text-mute-dark"><Link to="/">Home</Link></nav>
             <h1 className="t-name text-paper">All four, 2ml each.</h1>
             <p className="t-lede measure">The whole range in one box, with a card for your notes. Wear a different scent each day, then choose your bottle.</p>
-            <p className="text-base">Set price £[SET PRICE].</p>
+            <p className="text-base">Set price £⁠[SET PRICE].</p>
             <div ref={actions} className="flex flex-col gap-3 pt-1 sm:flex-row">
               <button type="button" disabled className="btn min-h-14">Online ordering opens at launch</button>
               <a href={`tel:${SITE.phoneIntl}`} className="btn btn-outline-paper">Pick one up in Tooting</a>
@@ -83,7 +83,7 @@ export function DiscoverySet() {
       </section>
 
       <StickyBar watch={actions} label="The discovery set">
-        <p className="flex min-w-0 flex-1 flex-col leading-tight"><span className="truncate font-medium">Discovery set</span><span className="truncate text-[16px] text-mute">£[SET PRICE]</span></p>
+        <p className="flex min-w-0 flex-1 flex-col leading-tight"><span className="truncate font-medium">Discovery set</span><span className="truncate text-[16px] text-mute">£⁠[SET PRICE]</span></p>
         <a href={`tel:${SITE.phoneIntl}`} className="btn btn-ink shrink-0 px-5">Call the shop</a>
       </StickyBar>
     </>

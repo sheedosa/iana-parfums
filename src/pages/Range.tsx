@@ -23,7 +23,7 @@ function Place({ s, step, onOn, onOff }: { s: Scent; step: "1" | "off" | "rest";
         <span className="flex flex-col gap-1 pr-4 pt-4">
           <h3 className="display t-h3 underline-offset-4 group-hover:underline">{fullName(s)}</h3>
           <span className="voice">{scentLine(s)}</span>
-          <span className="text-base text-mute">2ml sample £[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}.</span>
+          <span className="text-base text-mute">2ml sample £⁠[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}.</span>
           {note && <span className="text-base">{note}.</span>}
         </span>
       </VLink>
@@ -59,7 +59,7 @@ export function Range() {
             <h1 className={family === "all" ? "" : "t-name"}>{f.title}</h1>
             <div className="flex flex-col gap-2">
               <p className="t-lede">{family === "all" ? f.blurb : <>The range is four on purpose: one scent in each family. {f.blurb}</>}</p>
-              <p className="text-base text-mute">Bottles from {gbp(SITE.bottlesFrom)}, 2ml sample £[SAMPLE PRICE]. Sample scents with working names; bottle prices are samples for this preview.</p>
+              <p className="text-base text-mute">Bottles from {gbp(SITE.bottlesFrom)}, 2ml sample £⁠[SAMPLE PRICE]. Sample scents with working names; bottle prices are samples for this preview.</p>
             </div>
           </div>
 

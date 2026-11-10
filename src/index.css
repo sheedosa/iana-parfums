@@ -96,7 +96,7 @@
   /* Small text links that still need a 44px target: strip links and breadcrumbs. */
   .strip-link { display: inline-flex; min-height: 44px; align-items: center; margin: -10px 0; padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
   .crumbs { font-size: var(--t-small); }
-  .crumbs a { display: inline-flex; min-height: 44px; align-items: center; padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
+  .crumbs a { display: inline-flex; min-height: 44px; align-items: center; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 
   /* The type steps as classes, for text that is not an h1 or h2 element. The two small steps take the 600 weight:
      below about 30px the 500 hairlines get too thin to read comfortably. */

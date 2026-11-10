@@ -65,7 +65,7 @@ export function ScentPage() {
             <nav aria-label="Breadcrumb" className="crumbs"><Link to="/">Home</Link>, <Link to="/range">the range</Link>, <Link to={`/range/${fam}`}>{fam}</Link></nav>
             <h1 className="t-name">{name}</h1>
             <p className="voice">{s.family} eau de parfum. {s.strength}, for {when}.</p>
-            <p className="text-base lg:hidden">2ml sample first, £[SAMPLE PRICE]. Bottles from {gbp(s.prices["50ml"])}.</p>
+            <p className="text-base lg:hidden">2ml sample first, £⁠[SAMPLE PRICE]. Bottles from {gbp(s.prices["50ml"])}.</p>
             <div className="relative mt-4 flex h-[clamp(210px,50vw,380px)] grow items-end justify-center gap-[5%] border-b border-ink px-4 lg:min-h-[400px]" role="img" aria-label={`${name}: ${isSample ? "the 2ml sample vial, with the bottle behind it" : `the ${size} bottle, with its 2ml sample beside it`}`}>
               <span className="stage-item flex h-[96%] items-end" style={{ ...bottleVT(s.handle), transform: `scale(${isSample ? 0.72 : size === "50ml" ? 0.86 : 1})`, opacity: isSample ? 0.55 : 1 }}>
                 <Bottle scent={s} className="h-full w-auto" />
@@ -92,7 +92,7 @@ export function ScentPage() {
             <div key={size} className="swap flex flex-col gap-1 border-y border-line py-4" aria-live="polite">
               {isSample ? (
                 <>
-                  <p className="t-lede"><b>2ml sample, £[SAMPLE PRICE]</b></p>
+                  <p className="t-lede"><b>2ml sample, £⁠[SAMPLE PRICE]</b></p>
                   <p className="text-base text-mute">Wear it for a few days. If you buy the bottle, the sample price comes off.</p>
                 </>
               ) : (
@@ -142,7 +142,7 @@ export function ScentPage() {
             {pairs.map((x) => <ScentCard key={x.handle} s={x} />)}
             <Link to="/discovery-set" className="on-ink group flex flex-col justify-between gap-6 rounded-pill bg-ink p-6 text-paper col-span-2 sm:p-8 lg:col-span-1">
               <DiscoveryBox dark scents={store.scents()} className="w-full" />
-              <span className="flex flex-col gap-1"><span className="display t-h3 underline-offset-4 group-hover:underline">Or all four as samples</span><span className="text-base text-mute-dark">The discovery set, £[SET PRICE]</span></span>
+              <span className="flex flex-col gap-1"><span className="display t-h3 underline-offset-4 group-hover:underline">Or all four as samples</span><span className="text-base text-mute-dark">The discovery set, £⁠[SET PRICE]</span></span>
             </Link>
           </div>
         </section>
