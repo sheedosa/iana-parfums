@@ -25,7 +25,7 @@ npm run build:spa    # without prerender
 
 ## The two ideas
 - **Smell it first.** Every scent page defaults to the 2ml sample. Pressing "I've already tried the sample" (saved on the device) switches the page to the bottle with the credit shown; sampled scents are flagged across the range. The discovery set can mark all four at once.
-- **Scent finder.** When (day/evening), family (fresh/floral/woody/warm), strength (light/present). `findScents()` in `src/lib/store.ts` ranks the range and returns one or two; answers are saved in `localStorage` and shown in the header strip, with matches flagged "For you" on cards.
+- **Scent finder.** When (day/evening), family (fresh/floral/woody/warm), strength (light/present). `findScents()` in `src/lib/store.ts` ranks the range and returns one or two; answers are saved in `localStorage` and shown in the header strip, with matches noted as "Your finder pick" on the range. The result is shown the way the Home shelf works: the picked bottle steps forward and the band takes its tint.
 
 ## Going live
 1. Replace `scents.json` with the client's range, or port `ShopifyStorefront` from the schoolwear repo into `src/lib/store.ts` (Size as the variant option: 2ml sample / 50ml / 100ml; family, strength and when as metafields; the discovery set as its own product).

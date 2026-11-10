@@ -2,11 +2,11 @@
 
 /* I&A brand guide 2022, Parfums variant: Ochre as the ground for hero, scent panels and footer; warm white for reading;
    Sage for bands and plinths; Light Pink only as a faint highlight, never text.
-   Headings: Cormorant Garamond Bold, sentence case. Body and labels: Agrandir (Lexend stands in; swap --font-sans only).
-   Corners near-square. Quieter and darker than Fashions; softer than Tailoring. */
+   Type: Bodoni Moda for display (weight 500, optical sizing on, italic for the second voice); Jost for text, controls
+   and the few caps labels. Corners near-square. Quieter and darker than Fashions; softer than Tailoring. */
 @theme {
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Lexend", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Bodoni Moda", "Bodoni 72", Didot, Georgia, serif;
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
   --color-ink: #45353a;        /* Ochre */
   --color-ink-soft: #5e4b51;
   --color-mute: #6b5a60;       /* secondary text, AA on paper and sage */
@@ -19,11 +19,26 @@
   --color-line: #e9e4e5;
   --color-line-dark: #5e4b51;
   --radius-pill: 3px;
+  /* Body step: Jost has a low x-height, so the reading size is 17px. */
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.55;
   /* Motion: one easing, three durations. Motion answers an action; the only unprompted moment is the hero shelf arriving. */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --dur-1: 160ms;
   --dur-2: 420ms;
   --dur-3: 760ms;
+}
+
+/* One fluid scale. Every heading on the site takes one of these steps; nothing jumps at a breakpoint. */
+:root {
+  --t-hero: clamp(4.25rem, 12.2vw, 11.5rem);
+  --t-name: clamp(3.25rem, 7.4vw, 6.75rem);
+  --t-h1: clamp(2.5rem, 4.5vw, 4.125rem);
+  --t-h2: clamp(1.9375rem, 3vw, 2.75rem);
+  --t-h3: clamp(1.5rem, 1.9vw, 1.8125rem);
+  --t-h4: clamp(1.3125rem, 1.5vw, 1.4375rem);
+  --t-lede: clamp(1.1875rem, 1.35vw, 1.3125rem);
+  --t-small: .9375rem;
 }
 
 /* Element rules live in the base layer so utilities (font-sans on a label h2, sizes, colours) always win. */
@@ -36,23 +51,29 @@
   }
   ::view-transition-group(*) { animation-duration: 520ms; animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 260ms; }
-  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-size: 16px; font-weight: 400; line-height: 1.55; }
+  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-size: 1.0625rem; font-weight: 400; line-height: 1.55; }
   strong, b { font-weight: 500; }
-  h1, h2 { font-family: var(--font-serif); font-weight: 700; letter-spacing: -0.005em; line-height: 1.04; text-wrap: balance; }
+  /* Bodoni Moda: medium weight, optical sizing on so the hairlines thin out only at display sizes, tight tracking large. */
+  h1, h2 { font-family: var(--font-serif); font-weight: 500; font-optical-sizing: auto; text-wrap: balance; }
+  h1 { font-size: var(--t-h1); line-height: 1.04; letter-spacing: -0.014em; }
+  h2 { font-size: var(--t-h2); line-height: 1.1; letter-spacing: -0.01em; }
   h3 { font-weight: 400; text-wrap: balance; }
+  p { text-wrap: pretty; }
   a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
   .on-ink a:focus-visible, .on-ink button:focus-visible, .on-ink input:focus-visible { outline-color: var(--color-paper); }
 }
 
 @layer components {
-  .display { font-family: var(--font-serif); font-weight: 700; letter-spacing: -0.005em; line-height: 1.04; text-wrap: balance; }
-  .label { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 400; font-size: 0.75rem; line-height: 1.4; }
+  .display { font-family: var(--font-serif); font-weight: 500; font-optical-sizing: auto; letter-spacing: -0.008em; line-height: 1.1; text-wrap: balance; }
+  .label { font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 500; font-size: 0.75rem; line-height: 1.4; }
   .wrap { margin-inline: auto; width: 100%; max-width: 1320px; padding-inline: 1rem; }
   @media (min-width: 40rem) { .wrap { padding-inline: 2rem; } }
+  /* A reading column: 45 to 75 characters of Jost. */
+  .measure { max-width: 34rem; }
 
-  .btn { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: .5rem; border-radius: var(--radius-pill); padding-inline: 1.5rem; font-size: .8125rem; font-weight: 400; text-transform: uppercase; letter-spacing: .12em; text-align: center; transition: background-color .15s, color .15s; }
+  .btn { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: .5rem; border-radius: var(--radius-pill); padding: .5rem 1.5rem; font-size: .8125rem; font-weight: 500; text-transform: uppercase; letter-spacing: .14em; line-height: 1.3; text-align: center; transition: background-color var(--dur-1), color var(--dur-1); }
   .btn-ink { background: var(--color-ink); color: var(--color-paper); }
-  .btn-ink:hover { background: var(--color-ink-soft); }
+  .btn-ink:hover { background: var(--color-deep); }
   .btn-paper { background: var(--color-paper); color: var(--color-ink); }
   .btn-paper:hover { background: var(--color-sage); }
   .btn-outline-paper { border: 1px solid var(--color-paper); color: var(--color-paper); }
@@ -61,35 +82,47 @@
   .btn-ghost:hover { background: var(--color-ink); color: var(--color-paper); }
   /* Disabled buy button: solid tones, readable, clearly not pressable. */
   .btn:disabled { background: var(--color-stone); color: var(--color-ink); border: 1px dashed var(--color-mute); cursor: not-allowed; }
+  /* A text link with a full tap target. */
+  .link { display: inline-flex; min-height: 44px; align-items: center; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .link:hover { text-decoration-thickness: 2px; }
 
-  .chip { display: inline-flex; min-height: 2.75rem; min-width: 2.75rem; align-items: center; border-radius: var(--radius-pill); border: 1px solid var(--color-ink); padding-inline: 1rem; font-size: 1rem; white-space: nowrap; transition: background-color .15s, color .15s; }
+  .chip { display: inline-flex; min-height: 2.75rem; min-width: 2.75rem; align-items: center; border-radius: var(--radius-pill); border: 1px solid var(--color-ink); padding-inline: 1rem; font-size: 1.0625rem; white-space: nowrap; transition: background-color var(--dur-1), color var(--dur-1); }
+  .chip:hover { background: color-mix(in srgb, var(--color-ink) 8%, transparent); }
   .chip[aria-pressed="true"], .chip[aria-current="page"] { background: var(--color-ink); color: var(--color-paper); }
-  .chip-dark { display: inline-flex; min-height: 2.75rem; min-width: 2.75rem; align-items: center; border-radius: var(--radius-pill); border: 1px solid var(--color-paper); padding-inline: 1rem; font-size: 1rem; white-space: nowrap; color: var(--color-paper); transition: background-color .15s, color .15s; }
-  .chip-dark[aria-pressed="true"] { background: var(--color-paper); color: var(--color-ink); }
 
-  .field { min-height: 3rem; width: 100%; border-radius: var(--radius-pill); border: 1px solid var(--color-ink); background: var(--color-paper); padding: .5rem .875rem; font-size: 1rem; color: var(--color-ink); }
-  select.field { appearance: none; padding-right: 2.5rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2345353a' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+  .field { min-height: 3rem; width: 100%; border-radius: var(--radius-pill); border: 1px solid var(--color-ink); background: var(--color-paper); padding: .5rem .875rem; font-size: 1.0625rem; color: var(--color-ink); }
+  .field[aria-invalid="true"] { border-width: 2px; }
 
   /* Small text links that still need a 44px target: strip links and breadcrumbs. */
-  .strip-link { display: inline-flex; min-height: 44px; align-items: center; margin: -10px 0; padding: 0 2px; text-decoration: underline; }
-  .crumbs a { display: inline-flex; min-height: 44px; align-items: center; padding: 0 2px; text-decoration: underline; }
+  .strip-link { display: inline-flex; min-height: 44px; align-items: center; margin: -10px 0; padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
+  .crumbs { font-size: var(--t-small); }
+  .crumbs a { display: inline-flex; min-height: 44px; align-items: center; padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
 
-  /* Fluid type scale: one set of steps, sized from the viewport, so headings never jump at a breakpoint. */
-  .t-hero { font-size: clamp(3.75rem, 11.6vw, 10.75rem); line-height: .9; letter-spacing: -0.022em; }
-  .t-name { font-size: clamp(3.5rem, 9.4vw, 8.5rem); line-height: .92; letter-spacing: -0.02em; }
-  .t-h1 { font-size: clamp(2.625rem, 5vw, 4.5rem); line-height: 1; letter-spacing: -0.012em; }
-  .t-h2 { font-size: clamp(2.125rem, 3.7vw, 3.375rem); line-height: 1.02; letter-spacing: -0.01em; }
-  .t-h3 { font-size: clamp(1.625rem, 2.3vw, 2.125rem); line-height: 1.08; }
-  .t-lede { font-size: clamp(1.125rem, 1.35vw, 1.3125rem); line-height: 1.5; }
-  /* The second voice: Cormorant italic for the short line under a name or heading, where a caps label would shout. */
-  .voice { font-family: var(--font-serif); font-style: italic; font-weight: 600; font-size: clamp(1.375rem, 1.9vw, 1.75rem); line-height: 1.2; }
+  /* The type steps as classes, for text that is not an h1 or h2 element. The two small steps take the 600 weight:
+     below about 30px the 500 hairlines get too thin to read comfortably. */
+  .t-hero { font-size: var(--t-hero); line-height: .94; letter-spacing: -0.028em; }
+  .t-name { font-size: var(--t-name); line-height: .98; letter-spacing: -0.024em; }
+  .t-h1 { font-size: var(--t-h1); line-height: 1.04; letter-spacing: -0.014em; }
+  .t-h2 { font-size: var(--t-h2); line-height: 1.1; letter-spacing: -0.01em; }
+  .t-h3 { font-size: var(--t-h3); line-height: 1.18; letter-spacing: -0.01em; font-weight: 600; }
+  .t-h4 { font-size: var(--t-h4); line-height: 1.25; letter-spacing: -0.004em; font-weight: 600; }
+  .t-lede { font-size: var(--t-lede); line-height: 1.5; }
+  .t-small { font-size: var(--t-small); line-height: 1.5; }
+  /* The second voice: Bodoni italic for the short line under a name or heading, where a caps label would shout. */
+  .voice { font-family: var(--font-serif); font-style: italic; font-weight: 500; font-optical-sizing: auto; font-size: clamp(1.1875rem, 1.6vw, 1.5rem); line-height: 1.3; }
+  /* Prices and other figures set in the display face. */
+  .fig { font-family: var(--font-serif); font-weight: 500; font-optical-sizing: auto; font-variant-numeric: lining-nums; line-height: 1; }
 
-  /* The hero shelf: four bottles on one line. The chosen bottle steps forward; the ground takes its tint. */
+  /* The shelf: four bottles on one line. The chosen bottle steps forward; the ground takes its tint.
+     Used by the Home hero, the range, the finder result, the gift box chooser and the 404. */
   .tint { transition: background-color var(--dur-3) var(--ease-out); }
   .shelf-btn { position: relative; display: flex; flex: 1 1 0; min-width: 0; align-items: flex-end; justify-content: center; }
   .shelf-btn svg { height: 100%; width: 100%; transform-origin: 50% 100%; transform: scale(.86); opacity: .62; transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out); }
   .shelf-btn:hover svg { opacity: .9; }
-  .shelf-btn[aria-pressed="true"] svg { transform: scale(1); opacity: 1; }
+  .shelf-btn[aria-pressed="true"] svg, .shelf-btn[data-step="1"] svg { transform: scale(1); opacity: 1; }
+  .shelf-btn[data-step="2"] svg { transform: scale(.92); opacity: .92; }
+  .shelf-btn[data-step="back"] svg { transform: scale(.8); opacity: .45; }
+  .shelf-btn[data-step="rest"] svg { transform: scale(.94); opacity: 1; }
   .shelf-btn:focus-visible { outline-offset: -2px; }
   @keyframes rise { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: 0 0; } }
   .rise { animation: rise var(--dur-3) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 90ms + 120ms); }
@@ -100,9 +133,23 @@
   .stage-item { transform-origin: 50% 100%; transition: transform var(--dur-3) var(--ease-out), opacity var(--dur-2) var(--ease-out); }
 
   /* The slip: how the sample credit reads on a receipt. */
-  .slip { background: var(--color-paper); border: 1px solid var(--color-ink); border-radius: var(--radius-pill); }
+  .slip { background: var(--color-paper); color: var(--color-ink); border: 1px solid var(--color-ink); border-radius: var(--radius-pill); }
   .slip-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-block: .75rem; border-bottom: 1px dashed color-mix(in srgb, var(--color-ink) 45%, transparent); }
 
-  .lift svg { transition: transform 500ms cubic-bezier(.2,.8,.2,1); }
-  .lift:hover svg { transform: translateY(-3px); }
+  /* Ruled rows: a term and what it means. Used for delivery, families, how it works, visit. */
+  .rows > * { display: grid; gap: .25rem 1.5rem; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); padding-block: 1rem; }
+  @media (min-width: 40rem) { .rows > * { grid-template-columns: var(--term, 11rem) 1fr; align-items: baseline; } }
+
+  /* Phone bar: the chosen size, its price line and the call action, once the real buttons are out of view. */
+  .bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 30; display: flex; align-items: center; gap: .75rem; background: var(--color-paper); border-top: 1px solid var(--color-ink); padding: .5rem 1rem calc(.5rem + env(safe-area-inset-bottom)); transform: translateY(105%); visibility: hidden; transition: transform var(--dur-2) var(--ease-out), visibility 0s var(--dur-2); }
+  .bar[data-show="true"] { transform: none; visibility: visible; transition: transform var(--dur-2) var(--ease-out), visibility 0s; }
+  @media (min-width: 64rem) { .bar { display: none; } }
+
+  /* A page that ends on a full-bleed band meets the footer directly. */
+  main + footer { margin-top: 5rem; }
+  main:has(> .end-band:last-child) + footer { margin-top: 0; }
+
+  /* The phone menu: a full panel that answers the menu button. */
+  @keyframes panel { from { opacity: 0; translate: 0 -10px; } to { opacity: 1; translate: 0 0; } }
+  .panel { animation: panel var(--dur-2) var(--ease-out) both; }
 }

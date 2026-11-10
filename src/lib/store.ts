@@ -51,4 +51,4 @@ export function findScents(a: Answers): Scent[] {
   // The family match, plus the next closest if it shares at least when or strength.
   return ranked.filter((r, i) => i === 0 || (i === 1 && r.n >= 2)).map((r) => r.s);
 }
-export const answersLabel = (a: Answers) => `${a.when} · ${a.family} · ${a.strength}`;
+export const answersLabel = (a: Answers) => `${a.when.toLowerCase()}, ${a.family.toLowerCase()}, ${a.strength.toLowerCase()}`;

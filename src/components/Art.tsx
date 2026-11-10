@@ -98,10 +98,10 @@ export function BottleArt({ scent, dark = false, plain = false, transform, label
       <rect x={CX - s.lw / 2} y={ly - s.lh / 2} width={s.lw} height={s.lh} rx="1" fill={PAPER} stroke={line} strokeWidth="1" {...NS} />
       {!plain && (
         <g textAnchor="middle" fill={INK}>
-          <text x={CX} y={ly - s.lh / 2 + 8.5} fontSize={narrow ? 3.7 : 4.2} letterSpacing={narrow ? 0.55 : 0.9} fontFamily="Lexend, sans-serif">I &amp; A PARFUMS</text>
-          <text x={CX} y={ly + 4} fontSize={Math.min(s.lh > 45 ? 15 : 13.5, (s.lw - 8) / (big.length * 0.46))} fontWeight="700" fontFamily="'Cormorant Garamond', Georgia, serif">{big}</text>
+          <text x={CX} y={ly - s.lh / 2 + 8.5} fontSize={narrow ? 3.7 : 4.2} letterSpacing={narrow ? 0.55 : 0.9} fontFamily="Jost, sans-serif">I &amp; A PARFUMS</text>
+          <text x={CX} y={ly + 4} fontSize={Math.min(s.lh > 45 ? 15 : 13.5, (s.lw - 8) / (big.length * 0.58))} fontWeight="500" fontFamily="'Bodoni Moda', Didot, Georgia, serif">{big}</text>
           <path d={`M${CX - 7} ${ly + 8.5}H${CX + 7}`} stroke={INK} strokeWidth=".6" />
-          <text x={CX} y={ly + 15} fontSize="4.6" letterSpacing="1.1" fontFamily="Lexend, sans-serif">{small}</text>
+          <text x={CX} y={ly + 15} fontSize="4.6" letterSpacing="1.1" fontFamily="Jost, sans-serif">{small}</text>
         </g>
       )}
     </g>
@@ -157,21 +157,21 @@ export function DiscoveryBox({ scents, className = "", dark = false }: { scents:
       {/* lid, standing open behind the tray */}
       <rect x="40" y="14" width="320" height="150" rx="3" fill={DEEP} stroke={line} strokeWidth="1.5" {...NS} />
       <rect x="52" y="26" width="296" height="126" rx="1.5" fill="none" stroke={PAPER} strokeWidth="1" opacity=".35" {...NS} />
-      <text x="200" y="62" textAnchor="middle" fontSize="8" letterSpacing="2.4" fill={PAPER} fontFamily="Lexend, sans-serif">I &amp; A PARFUMS</text>
-      <text x="200" y="88" textAnchor="middle" fontSize="20" fontWeight="700" fill={PAPER} fontFamily="'Cormorant Garamond', Georgia, serif">The discovery set</text>
+      <text x="200" y="62" textAnchor="middle" fontSize="8" letterSpacing="2.4" fill={PAPER} fontFamily="Jost, sans-serif">I &amp; A PARFUMS</text>
+      <text x="200" y="88" textAnchor="middle" fontSize="20" fontWeight="500" fill={PAPER} fontFamily="'Bodoni Moda', Didot, Georgia, serif">The discovery set</text>
       {/* the inner wall of the tray */}
       <rect x="34" y="150" width="332" height="22" fill={mix(SAGE, INK, 0.18)} stroke={line} strokeWidth="1.5" {...NS} />
       {scents.map((s, i) => <VialArt key={s.handle} x={xs[i]} y={104} h={120} colour={s.colour} line={INK} cap={INK} />)}
       {/* a notes card tucked in at the end */}
       <g transform="rotate(-7 318 150)">
         <rect x="290" y="112" width="58" height="80" rx="1" fill={PAPER} stroke={INK} strokeWidth="1.5" {...NS} />
-        <text x="319" y="132" textAnchor="middle" fontSize="11" fontWeight="700" fill={INK} fontFamily="'Cormorant Garamond', Georgia, serif">Your notes</text>
+        <text x="319" y="132" textAnchor="middle" fontSize="11" fontWeight="500" fill={INK} fontFamily="'Bodoni Moda', Didot, Georgia, serif">Your notes</text>
         {[146, 156, 166].map((y) => <path key={y} d={`M300 ${y}H338`} stroke={INK} strokeWidth=".75" opacity=".4" {...NS} />)}
       </g>
       {/* the tray front */}
       <rect x="28" y="172" width="344" height="92" rx="3" fill={SAGE} stroke={line} strokeWidth="1.5" {...NS} />
       <rect x="40" y="184" width="320" height="68" rx="1.5" fill="none" stroke={INK} strokeWidth="1" opacity=".3" {...NS} />
-      <text x="200" y="222" textAnchor="middle" fontSize="9" letterSpacing="2.6" fill={INK} fontFamily="Lexend, sans-serif">{`${scents.length} × 2ML · SAMPLES`}</text>
+      <text x="200" y="222" textAnchor="middle" fontSize="9" letterSpacing="2.6" fill={INK} fontFamily="Jost, sans-serif">{`${scents.length} × 2ML SAMPLES`}</text>
     </svg>
   );
 }
@@ -188,8 +188,8 @@ export function GiftBox({ scent, className = "" }: { scent: Scent; className?: s
       {/* the paper band */}
       <rect x="170" y="186" width="192" height="58" fill={SAGE} stroke={INK} strokeWidth="1.5" {...NS} />
       <path d="M170 192H362M170 238H362" stroke={INK} strokeWidth=".75" opacity=".35" {...NS} />
-      <text x="266" y="210" textAnchor="middle" fontSize="7.5" letterSpacing="2.2" fill={INK} fontFamily="Lexend, sans-serif">I &amp; A PARFUMS</text>
-      <text x="266" y="230" textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="'Cormorant Garamond', Georgia, serif">{scent.name}</text>
+      <text x="266" y="210" textAnchor="middle" fontSize="7.5" letterSpacing="2.2" fill={INK} fontFamily="Jost, sans-serif">I &amp; A PARFUMS</text>
+      <text x="266" y="230" textAnchor="middle" fontSize="15" fontWeight="500" fill={INK} fontFamily="'Bodoni Moda', Didot, Georgia, serif">{scent.name}</text>
       {/* the bottle, in front */}
       <g transform="translate(76 56)"><BottleArt scent={scent} /></g>
     </svg>
@@ -208,9 +208,9 @@ export function SeasonalBox({ scent, className = "", dark = false }: { scent: Pi
       <g transform="rotate(-90 165 130) translate(85 -12)"><BottleArt scent={scent} label={["Season", "EDITION"]} /></g>
       {/* the card */}
       <rect x="292" y="54" width="62" height="152" rx="1" fill={PAPER} stroke={INK} strokeWidth="1.5" {...NS} />
-      <text x="323" y="84" textAnchor="middle" fontSize="6.5" letterSpacing="1.8" fill={INK} fontFamily="Lexend, sans-serif">EDITION</text>
-      <text x="323" y="108" textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="'Cormorant Garamond', Georgia, serif">The</text>
-      <text x="323" y="124" textAnchor="middle" fontSize="15" fontWeight="700" fill={INK} fontFamily="'Cormorant Garamond', Georgia, serif">season</text>
+      <text x="323" y="84" textAnchor="middle" fontSize="6.5" letterSpacing="1.8" fill={INK} fontFamily="Jost, sans-serif">EDITION</text>
+      <text x="323" y="108" textAnchor="middle" fontSize="15" fontWeight="500" fill={INK} fontFamily="'Bodoni Moda', Didot, Georgia, serif">The</text>
+      <text x="323" y="124" textAnchor="middle" fontSize="15" fontWeight="500" fill={INK} fontFamily="'Bodoni Moda', Didot, Georgia, serif">season</text>
       <path d="M310 136H336" stroke={INK} strokeWidth=".75" {...NS} />
       {[152, 162, 172, 182].map((y) => <path key={y} d={`M304 ${y}H342`} stroke={INK} strokeWidth=".75" opacity=".35" {...NS} />)}
     </svg>

@@ -53,4 +53,4 @@ export const SIZES = ["2ml sample", "50ml", "100ml"] as const;
 export type Size = (typeof SIZES)[number];
 
 export const gbp = (n: number) => `£${Number.isInteger(n) ? n : n.toFixed(2)}`;
-export const DELIVERY_LINE = `Standard delivery ${gbp(SITE.delivery.standard.price)} · Free from ${gbp(SITE.delivery.freeOver)} · ${SITE.returns.days}-day returns`;
+export const DELIVERY_LINE = `Standard delivery ${gbp(SITE.delivery.standard.price)}, free from ${gbp(SITE.delivery.freeOver)}, ${SITE.returns.days}-day returns`;

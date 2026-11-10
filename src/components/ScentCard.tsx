@@ -4,22 +4,33 @@ import { usePrefs } from "../lib/prefs";
 import { findScents, fullName, type Scent } from "../lib/store";
 import { gbp } from "../data/site";
 
-/** A scent in the range: the bottle on Sage, its name, family and prices. Bottles keep their family proportion. */
-export function ScentCard({ s, tall = false }: { s: Scent; tall?: boolean }) {
+export const whenText = (s: Scent) => (s.when === "Both" ? "day or evening" : s.when.toLowerCase());
+/** One line for a scent: its family, strength and when. */
+export const scentLine = (s: Scent) => `${s.family}, ${s.strength.toLowerCase()}, for ${whenText(s)}`;
+
+/** What the shopper has told us about this scent, in a short line; nothing if they have told us nothing. */
+export function useNote(s: Scent) {
   const { answers, sampled } = usePrefs();
-  const forYou = answers ? findScents(answers).some((x) => x.handle === s.handle) : false;
-  const tried = sampled.includes(s.handle);
+  if (sampled.includes(s.handle)) return "You have the sample";
+  if (answers && findScents(answers).some((x) => x.handle === s.handle)) return "Your finder pick";
+  return null;
+}
+
+/** A scent beside another: the bottle on Sage standing on a shelf line, its name, its line and its prices. */
+export function ScentCard({ s }: { s: Scent }) {
+  const note = useNote(s);
   return (
-    <VLink to={`/scents/${s.handle}`} className="lift group flex flex-col gap-2">
-      <div className={`relative flex flex-col items-center justify-end overflow-hidden rounded-pill bg-sage px-4 pt-10 ${tall ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
-        <span className="flex min-h-0 w-full flex-1" style={bottleVT(s.handle)}><Bottle scent={s} className="h-full w-full" /></span>
-        <span className="-mx-4 h-[6%] shrink-0 self-stretch border-t border-ink/25 bg-[#cdd8d2]" aria-hidden="true" />
-        {tried ? <span className="label absolute left-3 top-3 rounded-pill bg-ink px-2 py-1.5 text-[11px] text-paper">Sampled</span>
-          : forYou ? <span className="label absolute left-3 top-3 rounded-pill bg-paper px-2 py-1.5 text-[11px] text-ink">For you</span> : null}
-      </div>
-      <h3 className="display mt-1 text-[28px] leading-tight group-hover:underline">{fullName(s)}</h3>
-      <p className="-mt-1 text-base text-mute">{s.family} · working name · {s.strength.toLowerCase()}, for {s.when === "Both" ? "day or evening" : s.when.toLowerCase()}</p>
-      <p className="text-base">2ml £[SAMPLE PRICE] · 50ml {gbp(s.prices["50ml"])}</p>
+    <VLink to={`/scents/${s.handle}`} className="group flex flex-col">
+      <span className="flex aspect-[4/5] flex-col lg:aspect-[5/6] justify-end rounded-pill bg-sage px-6 pt-8">
+        <span className="flex min-h-0 flex-1 border-b border-ink" style={bottleVT(s.handle)}><Bottle scent={s} className="h-full w-full" /></span>
+        <span className="h-6 shrink-0" aria-hidden="true" />
+      </span>
+      <span className="flex flex-col gap-1 pt-4">
+        <h3 className="display t-h3 underline-offset-4 group-hover:underline">{fullName(s)}</h3>
+        <span className="voice">{scentLine(s)}</span>
+        <span className="text-base text-mute">2ml sample £[SAMPLE PRICE], 50ml {gbp(s.prices["50ml"])}. A working name.</span>
+        {note && <span className="text-base">{note}.</span>}
+      </span>
     </VLink>
   );
 }
