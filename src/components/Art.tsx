@@ -1,5 +1,7 @@
 // Drawn imagery, all on dark. One house bottle, drawn once: heavy glass with a visible wall and base, the liquid
 // line, a dip tube, a metal collar, a lacquer cap and a paper label with the scent's name. Flat tones only.
+// All lettering is Jost capitals, tracked. SVG adds the tracking after the last letter too, so a centred line is
+// moved right by half its tracking.
 import type { Scent } from "../lib/store";
 
 export const DEEP = "#2a2326", OCHRE = "#45353a", BONE = "#ede6dc";
@@ -43,7 +45,9 @@ export function BottleArt({ scent, plain = false, transform, label }: { scent: B
   const c = scent.colour;
   const glass = mix(c, DEEP, 0.7);
   const [big, small] = label ?? [scent.name, scent.family.toUpperCase()];
-  const nameSize = Math.min(16, 64 / (Math.max(big.length, 1) * 0.7));
+  const caps = big.toUpperCase();
+  const nameSize = Math.min(11, 60 / (Math.max(caps.length, 1) * 0.8));
+  const nameTrack = nameSize * 0.14;
   return (
     <g transform={transform}>
       <ellipse cx="100" cy="293" rx="66" ry="3.2" fill="#0d0a0b" opacity=".5" />
@@ -74,16 +78,16 @@ export function BottleArt({ scent, plain = false, transform, label }: { scent: B
       <rect x="81" y="25" width="4.5" height="62" rx="2.25" fill={BONE} opacity=".26" />
       <rect x="89" y="25" width="1.4" height="62" rx=".7" fill={BONE} opacity=".16" />
       <path d="M77 86.5h46" stroke={BONE} strokeOpacity=".18" strokeWidth="1" />
-      {/* the label: the only place tracked capitals are used */}
+      {/* the label */}
       <rect x="62" y="178" width="76" height="70" fill={BONE} />
       <rect x="65" y="181" width="70" height="64" fill="none" stroke={OCHRE} strokeOpacity=".45" strokeWidth=".6" />
       {!plain && (
         <g textAnchor="middle" fill={DEEP}>
-          <text x="100" y="194" fontSize="4.6" letterSpacing="1.3" fontFamily="Jost, sans-serif" fontWeight="500">I &amp; A PARFUMS</text>
-          <text x="100" y="217" fontSize={nameSize} fontWeight="500" fontFamily="'Libre Bodoni', Didot, Georgia, serif">{big}</text>
+          <text x="100.65" y="194" fontSize="4.6" letterSpacing="1.3" fontFamily="Jost, sans-serif" fontWeight="500">I &amp; A PARFUMS</text>
+          <text x={100 + nameTrack / 2} y="215.5" fontSize={nameSize} letterSpacing={nameTrack} fontWeight="300" fontFamily="Jost, sans-serif">{caps}</text>
           <path d="M92 224h16" stroke={DEEP} strokeWidth=".6" />
-          <text x="100" y="233" fontSize="4.4" letterSpacing="1.2" fontFamily="Jost, sans-serif">{small}</text>
-          <text x="100" y="240.5" fontSize="3.4" letterSpacing=".9" fontFamily="Jost, sans-serif">EAU DE PARFUM</text>
+          <text x="100.6" y="233" fontSize="4.4" letterSpacing="1.2" fontFamily="Jost, sans-serif">{small}</text>
+          <text x="100.45" y="240.5" fontSize="3.4" letterSpacing=".9" fontFamily="Jost, sans-serif">EAU DE PARFUM</text>
         </g>
       )}
     </g>
@@ -91,7 +95,7 @@ export function BottleArt({ scent, plain = false, transform, label }: { scent: B
 }
 
 /* ---------- The 2ml vial: a glass tube in a 40 x 150 box, standing on y = 146 ---------- */
-export function VialArt({ colour, transform }: { colour: string; transform?: string }) {
+export function VialArt({ colour, name, transform }: { colour: string; name?: string; transform?: string }) {
   return (
     <g transform={transform}>
       <ellipse cx="20" cy="147" rx="12" ry="1.6" fill="#0d0a0b" opacity=".5" />
@@ -100,15 +104,25 @@ export function VialArt({ colour, transform }: { colour: string; transform?: str
       <path d="M22.5 60h4v77a6.5 6.5 0 0 1 -4 6z" fill={mix(colour, DEEP, 0.3)} />
       <path d="M13.5 60h13" stroke={mix(colour, BONE, 0.7)} strokeWidth="1.2" />
       <path d="M13 44v88" stroke={BONE} strokeOpacity=".6" strokeWidth="1" strokeLinecap="round" />
-      <rect x="10.5" y="84" width="19" height="24" fill={BONE} />
-      <path d="M14 92h12M14 96h8" stroke={DEEP} strokeWidth=".8" opacity=".7" />
+      {name ? (
+        <>
+          {/* the paper label runs up the tube, the name written along it */}
+          <rect x="10.5" y="68" width="19" height="52" fill={BONE} />
+          <text x="20.4" y="94" transform="rotate(-90 20 94)" dominantBaseline="central" textAnchor="middle" fill={DEEP} fontSize="4.4" letterSpacing=".8" fontWeight="400" fontFamily="Jost, sans-serif">{name.toUpperCase()}</text>
+        </>
+      ) : (
+        <>
+          <rect x="10.5" y="84" width="19" height="24" fill={BONE} />
+          <path d="M14 92h12M14 96h8" stroke={DEEP} strokeWidth=".8" opacity=".7" />
+        </>
+      )}
       <rect x="9" y="6" width="22" height="33" rx="2" fill={LACQUER} stroke={BONE} strokeOpacity=".32" strokeWidth="1" />
       <rect x="12.5" y="10" width="2.4" height="25" rx="1.2" fill={BONE} opacity=".26" />
     </g>
   );
 }
-export function Vial({ colour, className = "" }: { colour: string; className?: string }) {
-  return <svg viewBox="0 0 40 150" className={className} aria-hidden="true"><VialArt colour={colour} /></svg>;
+export function Vial({ colour, name, className = "" }: { colour: string; name?: string; className?: string }) {
+  return <svg viewBox="0 0 40 150" className={className} aria-hidden="true"><VialArt colour={colour} name={name} /></svg>;
 }
 
 /* ---------- The gift box: a lidded box with a paper band, the bottle standing in front of it ---------- */
@@ -124,8 +138,8 @@ export function GiftBox({ scent, className = "" }: { scent: Scent; className?: s
       <rect x="184" y="186" width="196" height="56" fill={BONE} />
       <path d="M356 186h24v56h-24z" fill={mix(BONE, DEEP, 0.25)} />
       <g textAnchor="middle" fill={DEEP}>
-        <text x="270" y="207" fontSize="7" letterSpacing="2.2" fontFamily="Jost, sans-serif" fontWeight="500">I &amp; A PARFUMS</text>
-        <text x="270" y="229" fontSize="17" fontWeight="500" fontFamily="'Libre Bodoni', Didot, Georgia, serif">{scent.name}</text>
+        <text x="271.1" y="206" fontSize="7" letterSpacing="2.2" fontFamily="Jost, sans-serif" fontWeight="500">I &amp; A PARFUMS</text>
+        <text x="271.6" y="229" fontSize="15" letterSpacing="3.2" fontWeight="300" fontFamily="Jost, sans-serif">{scent.name.toUpperCase()}</text>
       </g>
       <BottleArt scent={scent} transform="translate(22 35.04) scale(.88)" />
     </svg>

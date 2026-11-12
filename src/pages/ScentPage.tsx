@@ -48,13 +48,13 @@ function Body({ handle, size, setSize, tried, toggle }: { handle: string; size: 
           { "@context": "https://schema.org", "@type": "Product", name, description: `A ${fam} eau de parfum. Concept preview: sample scent.`, brand: { "@type": "Brand", name: SITE.name }, category: `${s.family} eau de parfum`, color: s.colour }]} />
 
       <section className="wrap pt-4">
-        <h1 className="font-normal"><FitName text={name} cap="13rem" /></h1>
+        <h1><FitName text={name} cap="13rem" /></h1>
         <p className="t-lede mt-4">{scentLine(s)}</p>
         <p className="text-mute">A working name, and a sample scent for this preview.{note && <span className="text-bone"> {note}.</span>}</p>
 
         <div className="mt-6 flex h-[42svh] min-h-[260px] items-end justify-center gap-[4%] md:h-[clamp(280px,calc(100svh-30rem),520px)] md:min-h-0" role="img" aria-label={`${name}: ${isSample ? "the 2ml sample vial, with the bottle beside it" : `the ${size} bottle, with its 2ml sample beside it`}`}>
           <span className="step flex h-full items-end" data-step={isSample ? "back" : undefined} style={bottleVT(s.handle)}><Bottle scent={s} className="h-full w-auto" /></span>
-          <span className="step flex h-[46%] items-end" data-step={isSample ? undefined : "back"}><Vial colour={s.colour} className="h-full w-auto" /></span>
+          <span className="step flex h-[46%] items-end" data-step={isSample ? undefined : "back"}><Vial colour={s.colour} name={name} className="h-full w-auto" /></span>
         </div>
       </section>
 
@@ -92,7 +92,7 @@ function Body({ handle, size, setSize, tried, toggle }: { handle: string; size: 
           <h2 id="with">Wear it with</h2>
           <ul className="col">
             {pairs.map((x) => (
-              <li key={x.handle}><VLink to={`/scents/${x.handle}`} className="row row-lg"><span className="t">{fullName(x)}</span><span className="lead" aria-hidden="true" /><span className="v text-mute">{x.family}, {x.strength.toLowerCase()}</span></VLink></li>
+              <li key={x.handle}><VLink to={`/scents/${x.handle}`} className="row row-lg"><span className="t name">{fullName(x)}</span><span className="lead" aria-hidden="true" /><span className="v text-mute">{x.family}, {x.strength.toLowerCase()}</span></VLink></li>
             ))}
           </ul>
         </section>

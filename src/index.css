@@ -3,9 +3,10 @@
 /* I & A Parfums, v4: a gallery wall. Dark on every page. Deep is the ground, each scent washes the whole page in a
    dark tone of its own colour, Bone is the text, Amber is the one action. There are no boxes: options are rows with
    dotted leaders and an underline on the chosen one, and the only solid line is the shelf in the dock.
-   Type: Libre Bodoni for names and headings (no negative tracking, kerning on), Jost for everything else. */
+   Type (v5): Jost only, no serif. Scent names and h1 are hairline capitals (200/300), widely tracked; h2 and h3 are
+   light sentence case; reading text is 400. */
 @theme {
-  --font-serif: "Libre Bodoni", "Bodoni 72", Didot, Georgia, serif;
+  --font-display: "Jost", "Futura", "Century Gothic", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
   --color-deep: #2a2326;
   --color-ochre: #45353a;
@@ -24,11 +25,14 @@
   --wash: #2a2326;
   --dock-h: 5.25rem;
   /* One scale. The scent name is sized by FitName to the width of the page, so it has no step here. */
-  --t-h1: clamp(2.375rem, 5.2vw, 4.5rem);
-  --t-h2: clamp(1.75rem, 2.7vw, 2.375rem);
-  --t-h3: clamp(1.3125rem, 1.6vw, 1.5rem);
+  --t-h1: clamp(1.5rem, 3.3vw, 2.875rem);
+  --t-h2: clamp(1.625rem, 2.5vw, 2.25rem);
+  --t-h3: clamp(1.25rem, 1.5vw, 1.4375rem);
   --t-lede: clamp(1.1875rem, 1.4vw, 1.375rem);
   --t-small: .9375rem;
+  /* Tracking for capitals: wide when small, closer as the letters grow. */
+  --track-name: .16em;   /* names at text sizes, and h1 */
+  --track-fit: .06em;    /* the name across the width (FitName reads this figure too) */
 }
 @media (min-width: 48rem) { :root { --dock-h: 6.75rem; } }
 
@@ -43,11 +47,12 @@
   html { background: var(--wash); scroll-padding-bottom: calc(var(--dock-h) + 1.5rem); }
   body { background: var(--wash); color: var(--color-bone); font-family: var(--font-sans); font-size: 1.0625rem; font-weight: 400; line-height: 1.55; -webkit-font-smoothing: antialiased; padding-bottom: calc(var(--dock-h) + env(safe-area-inset-bottom)); transition: background-color var(--dur-3) var(--ease-out); }
   strong, b { font-weight: 500; }
-  /* Libre Bodoni is set with its own spacing: no negative tracking anywhere, kerning on, so capital W sits against the next letter. */
-  h1, h2, h3, .serif { font-family: var(--font-serif); font-weight: 500; letter-spacing: 0; font-kerning: normal; text-wrap: balance; }
-  h1 { font-size: var(--t-h1); line-height: 1.04; font-weight: 400; }
-  h2 { font-size: var(--t-h2); line-height: 1.12; }
-  h3 { font-size: var(--t-h3); line-height: 1.2; }
+  /* Hairline capitals for h1 and names: weight 300 while the letters are small, 200 once they are large enough to hold on a wash. */
+  h1, h2, h3 { font-family: var(--font-display); font-kerning: normal; text-wrap: balance; }
+  h1 { font-size: var(--t-h1); line-height: 1.22; font-weight: 300; text-transform: uppercase; letter-spacing: var(--track-name); }
+  h2 { font-size: var(--t-h2); line-height: 1.18; font-weight: 300; letter-spacing: .005em; }
+  h3 { font-size: var(--t-h3); line-height: 1.25; font-weight: 400; letter-spacing: .005em; }
+  @media (min-width: 64rem) { h1 { font-weight: 200; letter-spacing: .14em; } }
   p { text-wrap: pretty; }
   a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--color-amber); outline-offset: 3px; }
 }
@@ -57,15 +62,21 @@
   @media (min-width: 40rem) { .wrap { padding-inline: 2.5rem; } }
   .col { max-width: 46rem; }
   .measure { max-width: 34rem; }
-  .t-h1 { font-size: var(--t-h1); line-height: 1.04; font-weight: 400; }
-  .t-h2 { font-size: var(--t-h2); line-height: 1.12; }
-  .t-h3 { font-size: var(--t-h3); line-height: 1.2; }
+  .t-h1 { font-size: var(--t-h1); line-height: 1.22; }
+  .t-h2 { font-size: var(--t-h2); line-height: 1.18; font-weight: 300; }
+  .t-h3 { font-size: var(--t-h3); line-height: 1.25; font-weight: 400; }
+  /* A scent's name at text sizes: light capitals, tracked. `.name-c` is for a centred name: the indent balances the
+     space after the last letter. `.name-sm` is the name under a bottle or a vial, four across on a phone. */
+  .name { font-family: var(--font-display); font-weight: 300; text-transform: uppercase; letter-spacing: var(--track-name); font-kerning: normal; }
+  .name-c { text-indent: var(--track-name); }
+  .name-sm { --track-name: .12em; font-size: clamp(.6875rem, 2.85vw, 1.1875rem); line-height: 1.5; font-weight: 400; white-space: nowrap; }
+  @media (min-width: 48rem) { .name-sm { font-weight: 300; } }
   .t-lede { font-size: var(--t-lede); line-height: 1.45; }
   .t-small { font-size: var(--t-small); line-height: 1.5; }
 
   /* The scent name, sized to the width of its container (see FitName). */
   .fit { container-type: inline-size; }
-  .fit > * { display: block; font-family: var(--font-serif); font-weight: 400; letter-spacing: 0; font-kerning: normal; line-height: .86; white-space: nowrap; font-size: min(calc(100cqw / var(--em)), var(--cap, 100rem), 44svh); }
+  .fit > * { display: block; font-family: var(--font-display); font-weight: 200; text-transform: uppercase; letter-spacing: var(--track-fit); margin-right: calc(-1 * var(--track-fit)); font-kerning: normal; line-height: .82; white-space: nowrap; font-size: min(calc(100cqw / var(--em)), var(--cap, 100rem), 44svh); }
 
   /* Links. A plain link is Bone with an underline; the one action on a view is Amber. Both keep a 44px target. */
   .link { display: inline-flex; min-height: 44px; align-items: center; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
@@ -83,7 +94,8 @@
   .row > .v { flex: 0 1 auto; max-width: 68%; text-align: right; }
   a.row:hover > .t, button.row:hover > .t { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
   .row[aria-pressed="true"] > .t, .row[aria-current="page"] > .t { text-decoration: underline; text-decoration-color: var(--color-amber); text-underline-offset: 6px; text-decoration-thickness: 2px; }
-  .row-lg > .t { font-family: var(--font-serif); font-weight: 500; font-size: var(--t-h3); line-height: 1.2; }
+  .row-lg > .t { font-family: var(--font-display); font-weight: 400; font-size: var(--t-h3); line-height: 1.25; }
+  .row-lg > .t.name { font-weight: 300; font-size: 1.125rem; line-height: 1.5; }
 
   @media (max-width: 40rem) {
     .row-lg { flex-direction: column; gap: .125rem; }
@@ -108,7 +120,7 @@
   /* The bottle takes the height the name leaves on the screen. */
   .screen-bottle { height: 38svh; min-height: 230px; }
   @media (min-width: 48rem) {
-    .screen-bottle { --name: min(44svh, calc((min(100vw, 1440px) - 5rem) / var(--em))); height: clamp(220px, calc(100svh - var(--dock-h) - 10rem - .86 * var(--name)), 560px); min-height: 0; }
+    .screen-bottle { --name: min(44svh, calc((min(100vw, 1440px) - 5rem) / var(--em))); height: clamp(220px, calc(100svh - var(--dock-h) - 10rem - .82 * var(--name)), 560px); min-height: 0; }
   }
   @keyframes rise { from { opacity: 0; translate: 0 24px; } to { opacity: 1; translate: 0 0; } }
   .rise { animation: rise var(--dur-3) var(--ease-out) both; animation-delay: 150ms; }
@@ -124,11 +136,11 @@
   .dock a:hover .shelf svg { opacity: 1; }
   .dock a[aria-current="true"] .shelf svg { transform: scale(1); opacity: 1; }
   .dock .pick { align-self: flex-end; padding-bottom: .25rem; font-size: .75rem; line-height: 1.1; color: var(--color-mute); }
-  .dock .name { display: flex; height: 2rem; align-items: center; font-size: .9375rem; color: var(--color-mute); white-space: nowrap; }
+  .dock .name { display: flex; height: 2rem; align-items: center; font-size: .6875rem; font-weight: 400; text-transform: uppercase; letter-spacing: .08em; color: var(--color-mute); white-space: nowrap; }
   .dock a[aria-current="true"] .name { color: var(--color-bone); text-decoration: underline; text-decoration-color: var(--color-amber); text-decoration-thickness: 2px; text-underline-offset: 5px; }
   @media (min-width: 48rem) {
     .dock .shelf { height: 3.75rem; gap: .875rem; }
     .dock .pick { font-size: .875rem; padding-bottom: .5rem; }
-    .dock .name { height: 2.5rem; font-size: 1.0625rem; }
+    .dock .name { height: 2.5rem; font-size: .875rem; letter-spacing: .16em; }
   }
 }

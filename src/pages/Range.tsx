@@ -21,7 +21,7 @@ function Place({ s, back, onOn, onOff }: { s: Scent; back: boolean; onOn: () => 
           <span className="flex h-full" style={bottleVT(s.handle)}><Bottle scent={s} /></span>
         </span>
         <span className="flex flex-col items-center gap-0.5 px-1 pt-4 text-center">
-          <h3 className="text-[clamp(.9375rem,2.5vw,1.5rem)] underline-offset-[6px] group-hover:underline">{fullName(s)}</h3>
+          <h3 className="name name-c name-sm underline-offset-[6px] group-hover:underline">{fullName(s)}</h3>
           <span className="text-mute">{s.family}</span>
           <span className="text-mute">50ml {gbp(s.prices["50ml"])}</span>
           {note && <span className="t-small">{note}</span>}

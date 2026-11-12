@@ -56,7 +56,7 @@ export function Home() {
       <Seo title="Eau de parfum from Tooting, sampled before the bottle" path="/" description={`Eau de parfum from I & A in Tooting, London. Every scent comes as a 2ml sample before the bottle, and bottles start at ${gbp(SITE.bottlesFrom)}. Discovery set, gift box and a seasonal edition.`} />
 
       <div className="wrap">
-        <h1 className="font-sans text-base font-normal">Four eaux de parfum from Tooting, each sold as a 2ml sample before the bottle.</h1>
+        <h1 className="text-base font-normal normal-case tracking-normal">Four eaux de parfum from Tooting, each sold as a 2ml sample before the bottle.</h1>
       </div>
 
       {scents.map((s, i) => <Screen key={s.handle} s={s} first={i === 0} />)}

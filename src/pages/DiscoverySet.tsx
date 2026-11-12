@@ -31,9 +31,9 @@ export function DiscoverySet() {
           {scents.map((s) => (
             <li key={s.handle} className="min-w-0">
               <VLink to={`/scents/${s.handle}`} className="group flex flex-col items-start gap-3">
-                <span className="flex h-40 sm:h-56"><Vial colour={s.colour} className="h-full w-auto" /></span>
+                <span className="flex h-40 sm:h-56"><Vial colour={s.colour} name={fullName(s)} className="h-full w-auto" /></span>
                 <span className="flex flex-col">
-                  <span className="serif text-[clamp(.9375rem,2.5vw,1.5rem)] underline-offset-[6px] group-hover:underline">{fullName(s)}</span>
+                  <span className="name name-sm underline-offset-[6px] group-hover:underline">{fullName(s)}</span>
                   <span className="t-small text-mute">{s.family}{sampled.includes(s.handle) && <span className="text-bone">, tried</span>}</span>
                 </span>
               </VLink>

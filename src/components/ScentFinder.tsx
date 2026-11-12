@@ -39,7 +39,7 @@ export function ScentFinder() {
       <div className="flex flex-col gap-8">
         {Q.map((q) => (
           <fieldset key={q.key} className="min-w-0">
-            <legend className="serif t-h3">{q.label}</legend>
+            <legend className="t-h3">{q.label}</legend>
             {q.options.map((o) => <PickRow key={o} on={draft[q.key] === o} onClick={() => pick(q.key, o)} term={o}><span className="text-mute">{(q.hint as Record<string, string>)[o]}</span></PickRow>)}
           </fieldset>
         ))}
@@ -50,7 +50,7 @@ export function ScentFinder() {
           <div key={top.handle} className="swap flex flex-col items-start gap-2">
             <p className="text-mute">Closest for {done.when.toLowerCase()}, {done.family.toLowerCase()} and {done.strength.toLowerCase()}. Saved on this device.</p>
             <VLink to={`/scents/${top.handle}`} tabIndex={-1} aria-hidden="true" className="stand h-[40svh] min-h-[260px] justify-start"><span className="flex h-full" style={bottleVT(top.handle)}><Bottle scent={top} /></span></VLink>
-            <p className="serif t-h1">{fullName(top)}</p>
+            <p className="name t-h1">{fullName(top)}</p>
             <p className="t-lede">{scentLine(top)}</p>
             {second && <p>Also worth trying: <Link to={`/scents/${second.handle}`} className="link">{fullName(second)}</Link></p>}
             <VLink to={`/scents/${top.handle}`} className="act">Sample {fullName(top)}</VLink>
