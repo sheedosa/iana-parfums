@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Seo, breadcrumbs } from "../components/Seo";
 import { Bottle, Vial } from "../components/Art";
@@ -22,10 +22,11 @@ const LAYERS: [string, string][] = [["Top", "The first half hour"], ["Heart", "T
 export function ScentPage() {
   const { handle = "" } = useParams();
   const s = store.scent(handle);
-  const { sampled, toggleSampled } = usePrefs();
+  const { sampled, toggleSampled, ready } = usePrefs();
   const tried = sampled.includes(handle);
   const [size, setSize] = useState<Size>(tried ? "50ml" : "2ml sample");
-  useEffect(() => { setSize(sampled.includes(handle) ? "50ml" : "2ml sample"); }, [handle]);
+  // Chosen again when the scent changes and once the saved "tried" state has been read (straight after the first render).
+  useLayoutEffect(() => { setSize(sampled.includes(handle) ? "50ml" : "2ml sample"); }, [handle, ready]);
   useStage(s ? s.handle : null);
   if (!s) return <NotFound />;
   return <Body key={s.handle} handle={s.handle} size={size} setSize={setSize} tried={tried} toggle={() => { toggleSampled(s.handle); if (!tried) setSize("50ml"); }} />;

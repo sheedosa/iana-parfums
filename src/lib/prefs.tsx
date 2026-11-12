@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useLayoutEffect, useState, type ReactNode } from "react";
 import { type Answers } from "./store";
 
 // What the shopper has told us, remembered on this device: the scent finder answers, which samples they have
@@ -9,8 +9,10 @@ type Ctx = {
   answers: Answers | null; setAnswers: (a: Answers | null) => void;
   sampled: string[]; toggleSampled: (handle: string) => void;
   interest: Interest | null; setInterest: (i: Interest | null) => void;
+  /** False for the first render, which matches the prerendered page; true once the saved state has been read. */
+  ready: boolean;
 };
-const PrefsContext = createContext<Ctx>({ answers: null, setAnswers: () => {}, sampled: [], toggleSampled: () => {}, interest: null, setInterest: () => {} });
+const PrefsContext = createContext<Ctx>({ answers: null, setAnswers: () => {}, sampled: [], toggleSampled: () => {}, interest: null, setInterest: () => {}, ready: false });
 const KEY_A = "iana-parfums-finder", KEY_S = "iana-parfums-sampled", KEY_I = "iana-parfums-seasonal";
 
 function read<T>(key: string): T | null { try { const v = localStorage.getItem(key); return v ? (JSON.parse(v) as T) : null; } catch { return null; } }
@@ -21,13 +23,24 @@ const FAMS = ["Fresh", "Floral", "Woody", "Warm"];
 
 export function PrefsProvider({ children }: { children: ReactNode }) {
   // Saved state must stay valid when the range changes: drop answers or handles that no longer exist.
-  const [answers, setA] = useState<Answers | null>(() => { const a = read<Answers>(KEY_A); return a && FAMS.includes(a.family) ? a : null; });
-  const [sampled, setS] = useState<string[]>(() => (read<string[]>(KEY_S) ?? []).filter((h) => HANDLES.test(h)));
-  const [interest, setI] = useState<Interest | null>(() => read<Interest>(KEY_I));
+  // The first render knows nothing, exactly as the prerendered page does, so React can take that page over as it
+  // stands. What is saved on the device is read straight after, before the browser paints.
+  const [answers, setA] = useState<Answers | null>(null);
+  const [sampled, setS] = useState<string[]>([]);
+  const [interest, setI] = useState<Interest | null>(null);
+  const [ready, setReady] = useState(false);
+  useLayoutEffect(() => {
+    const a = read<Answers>(KEY_A);
+    setA(a && FAMS.includes(a.family) ? a : null);
+    const s = read<string[]>(KEY_S);
+    setS(Array.isArray(s) ? s.filter((h) => HANDLES.test(h)) : []);
+    setI(read<Interest>(KEY_I));
+    setReady(true);
+  }, []);
   const setAnswers = (a: Answers | null) => { setA(a); write(KEY_A, a); };
   const setInterest = (i: Interest | null) => { setI(i); write(KEY_I, i); };
   const toggleSampled = (h: string) => setS((cur) => { const next = cur.includes(h) ? cur.filter((x) => x !== h) : [...cur, h]; write(KEY_S, next); return next; });
-  return <PrefsContext.Provider value={{ answers, setAnswers, sampled, toggleSampled, interest, setInterest }}>{children}</PrefsContext.Provider>;
+  return <PrefsContext.Provider value={{ answers, setAnswers, sampled, toggleSampled, interest, setInterest, ready }}>{children}</PrefsContext.Provider>;
 }
 
 export const usePrefs = () => useContext(PrefsContext);

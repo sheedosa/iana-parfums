@@ -14,7 +14,7 @@ export function VLink({ to, onClick, carry, ...rest }: ComponentProps<typeof Lin
     onClick?.(e);
     const doc = document as Doc;
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    if (!doc.startViewTransition || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!doc.startViewTransition || document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     e.preventDefault();
     if (carry) {
       const name = `bottle-${carry}`;

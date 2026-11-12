@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect, useLayoutEffect, useRef } from "react";
+import { BrowserRouter, Route, Routes, useLocation, useNavigationType } from "react-router-dom";
 import { Dock, Footer, Header } from "./components/Layout";
 import { StageProvider } from "./lib/stage";
 import { PrefsProvider } from "./lib/prefs";
@@ -11,9 +11,26 @@ import { FinderPage, OurScents, Visit } from "./pages/Info";
 import { DeliveryReturns, GiftBoxPage, SeasonalEdition } from "./pages/Extras";
 import { NotFound } from "./pages/NotFound";
 
+/** Where the page stood, by history entry. A new page opens at the top (or at its #anchor); Back and Forward put the
+    reader where they were. One passive listener notes the position; nothing is measured while scrolling. */
+const seen = new Map<string, number>();
 function ScrollTop() {
-  const { pathname, hash } = useLocation();
-  useEffect(() => { if (hash) document.getElementById(hash.slice(1))?.scrollIntoView(); else window.scrollTo(0, 0); }, [pathname, hash]);
+  const { pathname, hash, key } = useLocation();
+  const type = useNavigationType();
+  const here = useRef(key);
+  useEffect(() => {
+    try { history.scrollRestoration = "manual"; } catch { /* older browsers */ }
+    const note = () => { seen.set(here.current, window.scrollY); };
+    window.addEventListener("scroll", note, { passive: true });
+    return () => window.removeEventListener("scroll", note);
+  }, []);
+  useLayoutEffect(() => {
+    here.current = key;
+    const back = type === "POP" ? seen.get(key) : undefined;
+    if (back !== undefined) window.scrollTo(0, back);
+    else if (hash) document.getElementById(hash.slice(1))?.scrollIntoView();
+    else window.scrollTo(0, 0);
+  }, [pathname, hash, key, type]);
   return null;
 }
 

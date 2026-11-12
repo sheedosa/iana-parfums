@@ -14,7 +14,7 @@ const routes = ["/", "/range", "/discovery-set", "/gift-box", "/seasonal-edition
   ...cat.families.map((f) => `/range/${f.handle}`),
   ...cat.scents.map((s) => `/scents/${s.handle}`)];
 
-const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".webp": "image/webp", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".json": "application/json", ".ico": "image/x-icon", ".txt": "text/plain", ".xml": "application/xml", ".webmanifest": "application/manifest+json" };
+const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".webp": "image/webp", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".json": "application/json", ".ico": "image/x-icon", ".txt": "text/plain", ".xml": "application/xml", ".woff2": "font/woff2", ".webmanifest": "application/manifest+json" };
 const server = createServer((req, res) => {
   let p = decodeURIComponent(req.url.split("?")[0]).replace(BASE, "") || "/";
   let f = join(dist, p);
@@ -28,13 +28,21 @@ const PORT = server.address().port; // any free port, so two builds can run side
 const exe = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
 const browser = await chromium.launch(exe ? { executablePath: exe } : {});
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort()); // fonts aren't needed for markup
 let n = 0;
 for (const r of routes) {
   await page.goto(`http://localhost:${PORT}${BASE}${r}`, { waitUntil: "networkidle" });
   await page.waitForFunction(() => document.querySelector("h1") && !document.body.innerText.includes("Loading"), null, { timeout: 10000 }).catch(() => {});
-  let html = await page.content();
-  html = html.replace("<html", '<html data-prerendered="1"'); // informational only
+  // main.tsx takes the page over (hydrates it) only on the route it was drawn for. React keeps neighbouring pieces of
+  // text as separate nodes; written out as HTML they would run together, so a comment is put between them, as
+  // React's own server renderer does, and the page read back has the same nodes React expects.
+  await page.evaluate((route) => {
+    document.documentElement.dataset.prerendered = route;
+    const walk = document.createTreeWalker(document.getElementById("root"), NodeFilter.SHOW_TEXT);
+    const gaps = [];
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) if (n.nextSibling && n.nextSibling.nodeType === Node.TEXT_NODE) gaps.push(n);
+    for (const n of gaps) n.after(document.createComment(""));
+  }, r);
+  const html = await page.content();
   const out = r === "/" ? join(dist, "index.html") : join(dist, r.slice(1), "index.html");
   mkdirSync(join(out, ".."), { recursive: true });
   writeFileSync(out, "<!doctype html>\n" + html.replace(/^<!doctype html>\s*/i, ""));

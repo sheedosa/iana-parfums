@@ -9,16 +9,17 @@ import { VLink } from "./VLink";
 const BASE = import.meta.env.BASE_URL;
 
 export function Logo({ className = "" }: { className?: string }) {
-  return <img src={`${BASE}img/logo/iana-parfums-horizontal-white.svg`} alt="I&A Parfums" className={className} width="340" height="49" />;
+  return <img src={`${BASE}img/logo/iana-parfums-horizontal-white.svg`} alt="I&A Parfums" className={className} width="340" height="49" decoding="async" />;
 }
 
 /** The header: the lockup and two links. The four scents are in the dock, not here. */
 export function Header() {
   const nav = ({ isActive }: { isActive: boolean }) => `inline-flex min-h-11 min-w-11 items-center justify-center underline-offset-[6px] hover:underline ${isActive ? "underline decoration-amber decoration-2" : ""}`;
   return (
-    <header className="wrap flex min-h-[4.5rem] items-center justify-between gap-6">
-      <Link to="/" className="inline-flex min-h-11 shrink-0 items-center"><Logo className="h-[1.625rem] w-auto sm:h-8" /></Link>
-      <nav aria-label="Site" className="flex gap-6 sm:gap-9">
+    <header className="wrap flex min-h-[4.5rem] items-center justify-between gap-x-4 min-[390px]:gap-x-6">
+      {/* The lockup gives way before the two links do: it narrows with the phone (147px at 320, 180px from 390). */}
+      <Link to="/" className="inline-flex min-h-11 min-w-0 shrink items-center"><Logo className="h-auto w-[min(180px,46vw)] sm:h-8 sm:w-auto" /></Link>
+      <nav aria-label="Site" className="flex shrink-0 gap-2 min-[390px]:gap-6 sm:gap-9">
         <NavLink to="/discovery-set" className={nav}>Samples</NavLink>
         <NavLink to="/visit" className={nav}>Visit</NavLink>
       </nav>

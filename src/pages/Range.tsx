@@ -16,7 +16,7 @@ function Place({ s, back, onOn, onOff }: { s: Scent; back: boolean; onOn: () => 
   const note = useNote(s);
   return (
     <li className="min-w-0">
-      <VLink to={`/scents/${s.handle}`} className="group flex h-full flex-col" onMouseEnter={onOn} onMouseLeave={onOff} onFocus={onOn} onBlur={onOff}>
+      <VLink to={`/scents/${s.handle}`} className="group flex h-full flex-col" onPointerEnter={(e) => { if (e.pointerType === "mouse") onOn(); }} onPointerLeave={(e) => { if (e.pointerType === "mouse") onOff(); }} onFocus={(e) => { if (e.currentTarget.matches(":focus-visible")) onOn(); }} onBlur={onOff}>
         <span className="step stand h-[clamp(150px,min(34vw,calc(100svh-33rem)),460px)]" data-step={back ? "back" : undefined}>
           <span className="flex h-full" style={bottleVT(s.handle)}><Bottle scent={s} /></span>
         </span>

@@ -80,9 +80,9 @@ export function SeasonalEdition() {
 
           <h2 className="mt-10">How it works</h2>
           <dl className="col">
-            <Fact term="Made for the season">A scent chosen for the months it arrives in</Fact>
-            <Fact term="Sent to your door">Each edition posted in its own box</Fact>
-            <Fact term="Registering">Costs nothing and commits you to nothing</Fact>
+            <Fact stack term="Made for the season">A scent chosen for the months it arrives in</Fact>
+            <Fact stack term="Sent to your door">Each edition posted in its own box</Fact>
+            <Fact stack term="Registering">Costs nothing and commits you to nothing</Fact>
           </dl>
           <p className="col text-mute">What each box holds: [EDITION CONTENTS TO CONFIRM]. Price and how often: £⁠[PRICE PER EDITION], [HOW OFTEN IT IS SENT]</p>
 
@@ -98,11 +98,11 @@ export function SeasonalEdition() {
               <form onSubmit={submit} noValidate className="flex flex-col gap-5">
                 <div className="flex flex-col">
                   <label htmlFor="se-name">Your name <span className="text-mute">(optional)</span></label>
-                  <input id="se-name" className="field" autoComplete="name" autoCapitalize="words" value={name} onChange={(e) => setName(e.target.value)} />
+                  <input id="se-name" className="field" type="text" name="name" autoComplete="name" autoCapitalize="words" enterKeyHint="next" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="se-email">Email address</label>
-                  <input ref={field} id="se-email" className="field" type="email" inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} aria-invalid={error ? true : undefined} aria-describedby={error ? "se-error" : undefined} value={email} onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }} />
+                  <input ref={field} id="se-email" className="field" type="email" name="email" inputMode="email" autoComplete="email" enterKeyHint="send" autoCapitalize="none" spellCheck={false} aria-invalid={error ? true : undefined} aria-describedby={error ? "se-error" : undefined} value={email} onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }} />
                   {error && <p id="se-error" role="alert" className="pt-2 font-medium">{error}</p>}
                 </div>
                 <button type="submit" className="act self-start">Register my interest</button>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bottle } from "./Art";
 import { PickRow } from "./Rows";
@@ -20,17 +20,27 @@ type Draft = { when?: When; family?: Family; strength?: Strength };
     takes its wash, its bottle steps forward in the dock and is marked there, and the answers are saved on this
     device. Lives on /scent-finder only; other pages link to it. */
 export function ScentFinder() {
-  const { answers, setAnswers } = usePrefs();
+  const { answers, setAnswers, ready } = usePrefs();
   const [draft, setDraft] = useState<Draft>(answers ?? {});
+  // Saved answers arrive straight after the first render (see prefs.tsx): show them then.
+  useLayoutEffect(() => { if (ready && answers) setDraft(answers); }, [ready]);
   const done = draft.when && draft.family && draft.strength ? (draft as Answers) : null;
   const [top, second] = done ? findScents(done) : [];
   const left = Q.filter((q) => !draft[q.key]).length;
+  const result = useRef<HTMLDivElement>(null);
   useStage(top ? top.handle : null);
 
   const pick = (key: keyof Draft, value: string) => {
     const next = { ...draft, [key]: value } as Draft;
     setDraft(next);
-    if (next.when && next.family && next.strength) setAnswers(next as Answers);
+    if (next.when && next.family && next.strength) {
+      setAnswers(next as Answers);
+      // On a phone the answer comes out below the questions, under the fold or the dock: bring it up to be read.
+      requestAnimationFrame(() => {
+        const el = result.current;
+        if (el && el.getBoundingClientRect().top > window.innerHeight * 0.45) el.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      });
+    }
   };
   const reset = () => { setDraft({}); setAnswers(null); };
 
@@ -45,7 +55,7 @@ export function ScentFinder() {
         ))}
       </div>
 
-      <div role="status" aria-live="polite" className="lg:pt-1">
+      <div ref={result} role="status" aria-live="polite" className="scroll-mt-4 lg:pt-1">
         {done && top ? (
           <div key={top.handle} className="swap flex flex-col items-start gap-2">
             <p className="text-mute">Closest for {done.when.toLowerCase()}, {done.family.toLowerCase()} and {done.strength.toLowerCase()}. Saved on this device.</p>

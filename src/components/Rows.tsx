@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 /** A fact: a term, a dotted leader and its value at the right. Goes inside a <dl>. */
-export function Fact({ term, children, lg = false }: { term: ReactNode; children: ReactNode; lg?: boolean }) {
-  return <div className={`row ${lg ? "row-lg" : ""}`}><dt className="t">{term}</dt><span className="lead" aria-hidden="true" /><dd className="v">{children}</dd></div>;
+export function Fact({ term, children, lg = false, stack = false }: { term: ReactNode; children: ReactNode; lg?: boolean; stack?: boolean }) {
+  return <div className={`row ${lg ? "row-lg" : ""} ${stack ? "row-stack" : ""}`}><dt className="t">{term}</dt><span className="lead" aria-hidden="true" /><dd className="v">{children}</dd></div>;
 }
 
 /** A row that goes somewhere: the page's name, a leader and a few words on what it is. */
