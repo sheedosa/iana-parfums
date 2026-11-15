@@ -29,6 +29,9 @@ export const SITE = {
   },
   returns: { days: 28, excluded: ["suits", "bridal dresses", "prom dresses"] },
   // What the client wants to sell, confirmed: samples, sample sets, gift boxes and a seasonal subscription.
+  // Search engines are asked not to list the site (noindex, follow on every page) until the client confirms the
+  // facts and wants it in search: then set this to true. Titles, Open Graph, JSON-LD and the sitemap stay either way.
+  indexable: false,
   preview: true, // concept preview: sample scents, ordering switched off
   toConfirm: [
     "Brand name (client considering M.H.T); I & A Parfums is the working name",
