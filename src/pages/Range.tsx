@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Seo, breadcrumbs } from "../components/Seo";
+import { Seo, breadcrumbs, fit } from "../components/Seo";
 import { Bottle } from "../components/Art";
 import { VLink, bottleVT } from "../components/VLink";
 import { NotFound } from "./NotFound";
@@ -47,7 +47,7 @@ export function Range() {
 
   return (
     <>
-      <Seo title={family === "all" ? "The range" : `${f.title} scents`} path={path} description={`${f.blurb} Bottles from ${gbp(SITE.bottlesFrom)}. I&A Parfums, Tooting, London.`}
+      <Seo title={family === "all" ? "The range" : `${f.title} scents`} path={path} description={fit(f.blurb, !/2ml/.test(f.blurb) && "Every scent comes as a 2ml sample before the bottle.", `Bottles from ${gbp(SITE.bottlesFrom)}.`, "I&A Parfums, Tooting, London.")}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, ...(family === "all" ? [] : [{ name: "The range", path: "/range" }]), { name: f.title, path }]), { "@context": "https://schema.org", "@type": "CollectionPage", name: f.title, description: f.blurb }]} />
 
       <section className="wrap pt-6">

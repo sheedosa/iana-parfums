@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Seo, breadcrumbs } from "../components/Seo";
+import { Seo, breadcrumbs, absolute } from "../components/Seo";
 import { Bottle, Vial } from "../components/Art";
 import { FitName } from "../components/FitName";
 import { Fact, OtherWays, PickRow } from "../components/Rows";
@@ -43,10 +43,10 @@ function Body({ handle, size, setSize, tried, toggle }: { handle: string; size: 
 
   return (
     <>
-      <Seo title={`${name}, eau de parfum`} path={path} type="product"
+      <Seo title={`${name}, eau de parfum`} path={path} type="product" image={`/img/og/p/${s.handle}.jpg`} imageAlt={`${name}: the bottle drawn in its colour, beside the I&A Parfums lockup`}
         description={`${name}: a ${s.strength.toLowerCase()} ${fam} eau de parfum for ${whenText(s)}, from I & A Parfums in Tooting. Try the 2ml sample first; bottles from ${gbp(SITE.bottlesFrom)}.`}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "The range", path: "/range" }, { name: s.family, path: `/range/${fam}` }, { name, path }]),
-          { "@context": "https://schema.org", "@type": "Product", name, description: `A ${fam} eau de parfum. Concept preview: sample scent.`, brand: { "@type": "Brand", name: SITE.name }, category: `${s.family} eau de parfum`, color: s.colour }]} />
+          { "@context": "https://schema.org", "@type": "Product", name, description: `A ${fam} eau de parfum. Concept preview: sample scent.`, brand: { "@type": "Brand", name: SITE.name }, category: `${s.family} eau de parfum`, image: absolute(`/img/og/p/${s.handle}.jpg`) }]} />
 
       <section className="wrap pt-4">
         <h1><FitName text={name} cap="13rem" /></h1>

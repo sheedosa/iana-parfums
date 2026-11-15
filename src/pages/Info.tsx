@@ -9,7 +9,7 @@ import { SITE, gbp } from "../data/site";
 export function FinderPage() {
   return (
     <>
-      <Seo title="Scent finder" path="/scent-finder" description="Three questions: when you'll wear it, which family, how strong. We point you to one or two of the four scents and remember your answers on this device. I&A Parfums, Tooting."
+      <Seo title="Scent finder" path="/scent-finder" description="Three questions: when you'll wear it, which family, how strong. We point you to one or two of the four scents and remember your answers on this device."
         jsonLd={breadcrumbs([{ name: "Home", path: "/" }, { name: "Scent finder", path: "/scent-finder" }])} />
       <section className="wrap pt-6">
         <h1>The scent finder</h1>

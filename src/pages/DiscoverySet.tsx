@@ -1,4 +1,4 @@
-import { Seo, breadcrumbs } from "../components/Seo";
+import { Seo, breadcrumbs, absolute, CARD } from "../components/Seo";
 import { Vial } from "../components/Art";
 import { VLink } from "../components/VLink";
 import { OtherWays } from "../components/Rows";
@@ -18,10 +18,10 @@ export function DiscoverySet() {
 
   return (
     <>
-      <Seo title="The discovery set: all four scents as 2ml samples" path="/discovery-set" type="product"
+      <Seo title="The discovery set: four 2ml samples" path="/discovery-set" type="product"
         description="Every I&A Parfums scent as a 2ml sample in one box, with a card for your notes. Wear a different one each day, then choose your bottle. Tooting, London."
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Discovery set", path: "/discovery-set" }]),
-          { "@context": "https://schema.org", "@type": "Product", name: "Discovery set", description: `Four 2ml samples: ${scents.map(fullName).join(", ")}. Concept preview: sample product.`, brand: { "@type": "Brand", name: SITE.name }, category: "Fragrance discovery set" }]} />
+          { "@context": "https://schema.org", "@type": "Product", name: "Discovery set", description: `Four 2ml samples: ${scents.map(fullName).join(", ")}. Concept preview: sample product.`, brand: { "@type": "Brand", name: SITE.name }, category: "Fragrance discovery set", image: absolute(CARD) }]} />
 
       <section className="wrap pt-6">
         <h1>The discovery set</h1>

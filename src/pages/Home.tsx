@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
-import { Seo } from "../components/Seo";
+import { Seo, WEBSITE_LD } from "../components/Seo";
 import { Bottle, wash } from "../components/Art";
 import { FitName, useEm } from "../components/FitName";
 import { OtherWays, Slip } from "../components/Rows";
@@ -53,7 +53,7 @@ export function Home() {
 
   return (
     <div ref={box}>
-      <Seo title="Eau de parfum from Tooting, sampled before the bottle" path="/" description={`Eau de parfum from I & A in Tooting, London. Every scent comes as a 2ml sample before the bottle, and bottles start at ${gbp(SITE.bottlesFrom)}. Discovery set, gift box and a seasonal edition.`} />
+      <Seo title="Eau de parfum, sampled before the bottle" path="/" jsonLd={WEBSITE_LD} description={`Eau de parfum from Tooting. Every scent comes as a 2ml sample before the bottle, and bottles start at ${gbp(SITE.bottlesFrom)}. Discovery set, gift box and a seasonal edition.`} />
 
       <div className="wrap">
         <h1 className="text-base font-normal normal-case tracking-normal">Four eaux de parfum from Tooting, each sold as a 2ml sample before the bottle.</h1>

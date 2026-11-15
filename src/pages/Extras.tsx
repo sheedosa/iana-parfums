@@ -1,6 +1,6 @@
 import { useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { Seo, breadcrumbs } from "../components/Seo";
+import { Seo, breadcrumbs, absolute, CARD } from "../components/Seo";
 import { Bottle, GiftBox } from "../components/Art";
 import { Fact, PickRow } from "../components/Rows";
 import { DeliveryLine } from "./ScentPage";
@@ -20,7 +20,7 @@ export function GiftBoxPage() {
       <Seo title="The gift box" path="/gift-box" type="product"
         description={`A bottle from the I&A Parfums range, boxed for giving. Choose the scent and the size; bottles from ${gbp(SITE.bottlesFrom)}. Tooting, London.`}
         jsonLd={[breadcrumbs([{ name: "Home", path: "/" }, { name: "Gift box", path: "/gift-box" }]),
-          { "@context": "https://schema.org", "@type": "Product", name: "Gift box", description: "A bottle from the range, boxed for giving. Concept preview: sample product.", brand: { "@type": "Brand", name: SITE.name }, category: "Fragrance gift set" }]} />
+          { "@context": "https://schema.org", "@type": "Product", name: "Gift box", description: "A bottle from the range, boxed for giving. Concept preview: sample product.", brand: { "@type": "Brand", name: SITE.name }, category: "Fragrance gift set", image: absolute(CARD) }]} />
 
       <section className="wrap grid gap-x-16 gap-y-8 pt-6 lg:grid-cols-[1fr_1.05fr]">
         <div className="flex flex-col gap-4">
