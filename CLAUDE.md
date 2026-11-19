@@ -48,3 +48,10 @@ Every link must work and share fully on GitHub Pages (`https://sheedosa.github.i
 - **Structured data allowed:** `Store` (address, telephone, hours from `SITE`) on every page, `WebSite` on Home, `BreadcrumbList` on inner pages, `Product` for each scent, the discovery set and the gift box with name, description (saying it is a sample for the preview), image and brand. **No `offers`**: bottle prices are samples and the 2ml price is unconfirmed. No notes, perfumer, concentration or placeholder in JSON-LD.
 - **Head:** `lang="en-GB"`, theme colour Deep `#2a2326`, SVG favicon plus `favicon-32.png`, 180px `apple-touch-icon`, `site.webmanifest` with `scope`, 192, 512 and a maskable 512 icon (`_scripts/icons.mjs` from the marque). Every path carries `/iana-parfums/`.
 - **Deep links:** `public/404.html` (noindex) sends an unknown path to `/?p=`, `main.tsx` restores it, and a path no route matches shows `NotFound`. `public/.nojekyll` is deployed. Search engines read only `https://sheedosa.github.io/robots.txt` for a project site.
+
+## UX evidence (v9)
+Every design or wording change names its evidence: a published standard or study (GOV.UK Service Manual and Design System, Baymard, WCAG 2.2) or a measurement taken on this site. No change on taste alone. Measured in November 2026 on every route at 390 and 1280 with `/home/claude/builds/v9/measure.cjs` (results in `/home/claude/builds/v9/`) and `forms.cjs`.
+- **Reading level.** Prose is written for a reading age of about 9 (GOV.UK content design): sentences of 25 words or fewer, one idea each.
+- **Kept on purpose:** one h1 per page, no vague button or link label, no unnamed control, no sideways overflow, every field with a visible label, and an empty form marks the fields to fix, describes each one and moves focus to the first.
+- **Not done yet:** nobody has been watched using the site. Before launch, watch three to five real customers do the main task on their own phones.
+- **This pass:** one sentence over 25 words (Discovery set) was split.

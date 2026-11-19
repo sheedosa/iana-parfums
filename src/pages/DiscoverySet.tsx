@@ -53,7 +53,7 @@ export function DiscoverySet() {
 
       <section className="wrap flex flex-col gap-3 pt-16" aria-labelledby="week">
         <h2 id="week">A week with four scents</h2>
-        <p className="t-lede col">Wear one scent a day, on skin, from the morning. When you know which you want, open its page and tell it you have tried the sample: the bottle then shows the sample price coming off.</p>
+        <p className="t-lede col">Wear one scent a day, on skin, from the morning. When you know which you want, open its page and tell it you have tried the sample. The bottle then shows the sample price coming off.</p>
         <button type="button" className="row col" aria-pressed={allTried} onClick={markAll}>
           <span className="t">I have the set and have tried all four</span><span className="lead" aria-hidden="true" /><span className="v">{allTried ? "Yes" : "Not yet"}</span>
         </button>
